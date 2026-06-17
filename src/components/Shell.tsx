@@ -184,8 +184,8 @@ function VisualTopbar() {
     <div className="topbar">
       {/* LEFT: greeting / page title */}
       <div className="greeting">
-        {meta.eyebrow && <span className="eyebrow topbar-eyebrow">{meta.eyebrow}</span>}
         <h2 className="topbar-title">{displayTitle}</h2>
+        {meta.eyebrow && <span className="topbar-eyebrow">{meta.eyebrow}</span>}
       </div>
 
       {/* CENTER: search bar */}
