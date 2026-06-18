@@ -750,3 +750,69 @@ table.blaxx tbody tr:last-child td { border-bottom: 0; }
   font-size: 40px;
   margin-bottom: var(--space-4);
 }
+
+/* =======================================================================
+   TEMA ESCURO — área logada (escopado em .app-shell)
+   Páginas públicas (login, cadastro, home) ficam FORA do shell e permanecem
+   claras. Aqui sobrescrevemos os tokens semânticos + os poucos componentes
+   que fixam cor clara/escura na mão. Vem por último para vencer por ordem.
+   ======================================================================= */
+.app-shell {
+  /* superfícies e texto */
+  --bg:             #080B0E;
+  --bg-elevated:    #11161C;
+  --surface:        #0E1318;
+  --border:         rgba(255,255,255,.09);
+  --text:           #E6E8EB;
+  --text-secondary: #AEB6BF;
+  --text-muted:     #79828B;
+  /* fundos "claros" auxiliares viram tons translúcidos sobre o escuro */
+  --gray-50:        rgba(255,255,255,.04);
+  --gray-100:       rgba(255,255,255,.07);
+  /* sombras mais densas para profundidade no escuro */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.45);
+  --shadow:    0 10px 28px rgba(0,0,0,.5), 0 2px 6px rgba(0,0,0,.4);
+  --shadow-lg: 0 24px 55px rgba(0,0,0,.6), 0 6px 16px rgba(0,0,0,.45);
+  color: var(--text);
+}
+
+/* títulos e valores com cor preta fixa -> claros */
+.app-shell h1, .app-shell h2, .app-shell h3, .app-shell .display,
+.app-shell .metric .value, .app-shell .action-tile .name { color: var(--text); }
+
+/* card lime continua claro (destaque) -> texto escuro p/ legibilidade */
+.app-shell .card.lime,
+.app-shell .card.lime h1, .app-shell .card.lime h2, .app-shell .card.lime h3 {
+  color: var(--blaxx-black);
+}
+
+/* topbar */
+.app-shell .topbar-title { color: var(--text); }
+.app-shell .topbar-eyebrow { color: var(--text-muted); }
+.app-shell .topbar-icon { background: var(--gray-50); border-color: var(--border); color: var(--text-secondary); }
+.app-shell .topbar-icon:hover { background: var(--gray-100); border-color: var(--blaxx-lime); color: var(--text); }
+.app-shell .topbar-gift { color: var(--blaxx-lime); }
+.app-shell .user-chip { background: var(--gray-50); border-color: var(--border); }
+.app-shell .user-chip:hover { border-color: var(--blaxx-lime); }
+.app-shell .user-chip .user-name { color: var(--text); }
+.app-shell .search-bar { background: var(--gray-50); }
+.app-shell .search-kbd { background: var(--gray-100); border-color: var(--border); color: var(--text-secondary); }
+
+/* cartões de ação e formulários (fundo branco fixo no tema claro) */
+.app-shell .action-tile { background: var(--surface); }
+.app-shell .action-tile:hover { border-color: var(--blaxx-lime); }
+.app-shell .field input,
+.app-shell .field select,
+.app-shell .field textarea { background: var(--bg-elevated); color: var(--text); }
+.app-shell .field input:focus,
+.app-shell .field select:focus,
+.app-shell .field textarea:focus { border-color: var(--blaxx-lime); }
+
+/* botões com texto preto fixo */
+.app-shell .btn.ghost { color: var(--text); }
+.app-shell .btn.ghost:hover { background: var(--gray-100); }
+.app-shell .btn.link:hover { color: var(--blaxx-lime); }
+
+/* chips, caixas e divisores */
+.app-shell .chip { background: var(--gray-100); color: var(--text-secondary); }
+.app-shell .copy-box { background: var(--gray-50); }

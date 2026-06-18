@@ -332,6 +332,17 @@ function WhatsAppFab() {
 export default function Shell() {
   const [meta, setMeta] = useState<PageMeta>({ eyebrow: '', title: '' })
 
+  // Pinta o <body> de escuro enquanto o shell logado está montado, para que a
+  // área de overscroll (rubber-band) e qualquer página mais curta que a
+  // viewport não revelem o fundo claro. Reverte ao sair (páginas públicas).
+  useEffect(() => {
+    const prev = document.body.style.background
+    document.body.style.background = '#080B0E'
+    return () => {
+      document.body.style.background = prev
+    }
+  }, [])
+
   return (
     <TopbarCtx.Provider value={{ meta, setMeta }}>
       <div className="app-shell">
