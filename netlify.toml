@@ -2,6 +2,10 @@
   command = "npm run build"
   publish = "dist"
 
+[build.environment]
+  # Pin Node para builds reproduzíveis no Netlify (Vite 5 exige >=18; 20 = LTS).
+  NODE_VERSION = "20"
+
 # SPA fallback: react-router usa client-side routing, então qualquer rota
 # precisa servir index.html (senão refresh em /dashboard, /carteira etc. dá 404).
 [[redirects]]
