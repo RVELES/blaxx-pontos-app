@@ -1,5 +1,5 @@
 /* =======================================================================
-   Blaxx Pontos · Design System (port fiel de blaxx_exe/renderer/assets/design-system.css)
+   BlaXx · Design System (port fiel de blaxx_exe/renderer/assets/design-system.css)
    Fonte de verdade: Windows (blaxx_exe). NÃO alterar tokens sem refletir na origem.
    ======================================================================= */
 
@@ -7,8 +7,8 @@
   /* Paleta de cores oficial */
   --blaxx-black:          #0A0A0A;
   --blaxx-black-soft:     #1A1A1A;
-  --blaxx-lime:           #C6F432;
-  --blaxx-lime-dark:      #8FB81F;
+  --blaxx-lime:           #7CFF00;
+  --blaxx-lime-dark:      #5AB800;
   --blaxx-lime-light:     #F0FAD9;
   --blaxx-white:          #FFFFFF;
   --gray-50:              #FAFAFA;
@@ -38,7 +38,7 @@
   --sidebar-border:       rgba(255,255,255,.07);
   --sidebar-item:         #8B9199;
   --sidebar-item-hover:   rgba(255,255,255,.06);
-  --sidebar-active-bg:    #C6F432;
+  --sidebar-active-bg:    #7CFF00;
   --sidebar-active-text:  #0A0A0A;
 
   /* Tipografia */
@@ -242,7 +242,7 @@ h3, .display-3 { font-size: 22px; line-height: 1.25; }
 }
 .search-bar:focus-within {
   border-color: var(--blaxx-lime-dark);
-  box-shadow: 0 0 0 3px rgba(198,244,50,.15);
+  box-shadow: 0 0 0 3px rgba(124,255,0,.15);
 }
 .search-icon { color: var(--text-muted); display: inline-flex; align-items: center; flex-shrink: 0; }
 .search-input {
@@ -440,7 +440,7 @@ h3, .display-3 { font-size: 22px; line-height: 1.25; }
   background: rgba(22,163,74,.12);
   color: var(--positive);
 }
-.growth-pill.on-dark { background: rgba(198,244,50,.16); color: var(--blaxx-lime); }
+.growth-pill.on-dark { background: rgba(124,255,0,.16); color: var(--blaxx-lime); }
 .growth-pill.negative { background: rgba(220,38,38,.12); color: var(--negative); }
 
 /* barras de distribuição da carteira */
@@ -586,7 +586,7 @@ h3, .display-3 { font-size: 22px; line-height: 1.25; }
 .field input:focus, .field select:focus, .field textarea:focus {
   outline: none;
   border-color: var(--blaxx-black);
-  box-shadow: 0 0 0 3px rgba(198,244,50,0.35);
+  box-shadow: 0 0 0 3px rgba(124,255,0,0.35);
 }
 /* checkbox/radio nunca herdam o appearance:none dos inputs de texto */
 .field input[type="checkbox"], .field input[type="radio"],
@@ -752,51 +752,56 @@ table.blaxx tbody tr:last-child td { border-bottom: 0; }
 }
 
 /* =======================================================================
-   TEMA ESCURO — área logada (escopado em .app-shell)
-   Páginas públicas (login, cadastro, home) ficam FORA do shell e permanecem
-   claras. Aqui sobrescrevemos os tokens semânticos + os poucos componentes
-   que fixam cor clara/escura na mão. Vem por último para vencer por ordem.
+   TEMA PREMIUM — área logada (escopado em .app-shell)
+   Linguagem visual: Apple Wallet × Amex Centurion × Nubank Ultravioleta ×
+   Revolut Metal × Bloomberg Terminal. Páginas públicas (login/cadastro/home)
+   ficam FORA do shell e permanecem claras. Vem por último p/ vencer por ordem.
    ======================================================================= */
 .app-shell {
   /* superfícies e texto */
-  --bg:             #080B0E;
-  --bg-elevated:    #11161C;
-  --surface:        #0E1318;
-  --border:         rgba(255,255,255,.09);
-  --text:           #E6E8EB;
-  --text-secondary: #AEB6BF;
-  --text-muted:     #79828B;
-  /* fundos "claros" auxiliares viram tons translúcidos sobre o escuro */
+  --bg:             #050505;
+  --bg-elevated:    #0E131B;
+  --surface:        #0A0D12;
+  --surface-hover:  #121722;
+  --border:         rgba(255,255,255,.08);
+  --border-strong:  rgba(255,255,255,.15);
+  --text:           #FFFFFF;
+  --text-secondary: #9CA3AF;
+  --text-muted:     #6B7280;
+  /* acentos premium */
+  --blaxx-lime:      #7CFF00;
+  --blaxx-lime-dark: #5AB800;
+  --accent:          #7CFF00;
+  --accent-2:        #7CFF00;
+  --positive:        #00FF88;
+  --negative:        #FF4D4D;
+  --gold:            #FFD700;
+  --silver:          #C0C0C0;
+  /* auxiliares translúcidos */
   --gray-50:        rgba(255,255,255,.04);
   --gray-100:       rgba(255,255,255,.07);
-  /* sombras mais densas para profundidade no escuro */
-  --shadow-sm: 0 1px 2px rgba(0,0,0,.45);
-  --shadow:    0 10px 28px rgba(0,0,0,.5), 0 2px 6px rgba(0,0,0,.4);
-  --shadow-lg: 0 24px 55px rgba(0,0,0,.6), 0 6px 16px rgba(0,0,0,.45);
+  --gray-200:       rgba(255,255,255,.10);
+  /* sombras profundas + glow lime */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.5);
+  --shadow:    0 12px 32px rgba(0,0,0,.55), 0 2px 8px rgba(0,0,0,.4);
+  --shadow-lg: 0 28px 60px rgba(0,0,0,.65), 0 8px 20px rgba(0,0,0,.5);
+  --glow-lime: 0 0 0 1px rgba(124,255,0,.22), 0 10px 44px rgba(124,255,0,.16);
+  --sidebar-bg: #070809;
   color: var(--text);
+  background: var(--bg);
+  grid-template-columns: 256px 1fr;
 }
 
 /* títulos e valores com cor preta fixa -> claros */
 .app-shell h1, .app-shell h2, .app-shell h3, .app-shell .display,
 .app-shell .metric .value, .app-shell .action-tile .name { color: var(--text); }
 
-/* card lime continua claro (destaque) -> texto escuro p/ legibilidade */
+/* card lime continua destaque -> texto escuro p/ legibilidade */
 .app-shell .card.lime,
 .app-shell .card.lime h1, .app-shell .card.lime h2, .app-shell .card.lime h3 {
   color: var(--blaxx-black);
 }
-
-/* topbar */
-.app-shell .topbar-title { color: var(--text); }
-.app-shell .topbar-eyebrow { color: var(--text-muted); }
-.app-shell .topbar-icon { background: var(--gray-50); border-color: var(--border); color: var(--text-secondary); }
-.app-shell .topbar-icon:hover { background: var(--gray-100); border-color: var(--blaxx-lime); color: var(--text); }
-.app-shell .topbar-gift { color: var(--blaxx-lime); }
-.app-shell .user-chip { background: var(--gray-50); border-color: var(--border); }
-.app-shell .user-chip:hover { border-color: var(--blaxx-lime); }
-.app-shell .user-chip .user-name { color: var(--text); }
-.app-shell .search-bar { background: var(--gray-50); }
-.app-shell .search-kbd { background: var(--gray-100); border-color: var(--border); color: var(--text-secondary); }
+.app-shell .card { background: var(--surface); border-color: var(--border); }
 
 /* cartões de ação e formulários (fundo branco fixo no tema claro) */
 .app-shell .action-tile { background: var(--surface); }
@@ -809,10 +814,239 @@ table.blaxx tbody tr:last-child td { border-bottom: 0; }
 .app-shell .field textarea:focus { border-color: var(--blaxx-lime); }
 
 /* botões com texto preto fixo */
-.app-shell .btn.ghost { color: var(--text); }
+.app-shell .btn.ghost { color: var(--text); border-color: var(--border-strong); }
 .app-shell .btn.ghost:hover { background: var(--gray-100); }
 .app-shell .btn.link:hover { color: var(--blaxx-lime); }
 
 /* chips, caixas e divisores */
 .app-shell .chip { background: var(--gray-100); color: var(--text-secondary); }
 .app-shell .copy-box { background: var(--gray-50); }
+
+/* ── Layout: sidebar fixa + conteúdo rolável + header glass ───────── */
+.app-shell .sidebar {
+  position: sticky; top: 0; height: 100vh; align-self: start;
+  background: linear-gradient(180deg, #0A0C10, #050607);
+  border-right: 1px solid var(--border);
+  padding: 22px 14px 18px;
+  gap: 2px;
+}
+.app-shell .sidebar .brand-logo { width: 118px; }
+.app-shell .main { padding: 0; overflow: visible; background: var(--bg); }
+.app-shell .main-content { padding: 24px 34px 72px; }
+
+/* ── Sidebar premium ─────────────────────────────────────────────── */
+.app-shell .sidebar .section-label {
+  color: rgba(255,255,255,.32); margin: 18px 10px 8px; font-size: 10px;
+}
+.app-shell .sidebar .nav-item {
+  position: relative; z-index: 0;
+  color: var(--text-secondary); padding: 11px 14px; border-radius: 12px;
+  font-weight: 500;
+}
+.app-shell .sidebar .nav-item .icon { color: var(--text-muted); transition: color .15s; }
+.app-shell .sidebar .nav-item:hover { background: rgba(255,255,255,.05); color: #fff; }
+.app-shell .sidebar .nav-item:hover .icon { color: #fff; }
+.app-shell .sidebar .nav-item.active { background: transparent; color: var(--blaxx-lime); font-weight: 700; }
+.app-shell .sidebar .nav-item.active .icon { color: var(--blaxx-lime); }
+.nav-active-pill {
+  position: absolute; inset: 0; border-radius: 12px; z-index: -1;
+  background: linear-gradient(135deg, rgba(124,255,0,.17), rgba(124,255,0,.05));
+  border: 1px solid rgba(124,255,0,.32);
+}
+.app-shell .sidebar-footer { color: rgba(255,255,255,.25); }
+
+/* ── Header glass (fixo no topo) ─────────────────────────────────── */
+.bx-header {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; gap: 16px;
+  padding: 13px 34px;
+  background: rgba(7,8,10,.6);
+  backdrop-filter: blur(22px) saturate(180%);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+  border-bottom: 1px solid var(--border);
+}
+.bx-header-logo { display: flex; align-items: center; cursor: pointer; flex-shrink: 0; }
+.bx-search {
+  flex: 1; max-width: 520px;
+  display: flex; align-items: center; gap: 10px;
+  height: 44px; padding: 0 15px; border-radius: 14px;
+  background: rgba(255,255,255,.05); border: 1px solid var(--border);
+  color: var(--text-muted);
+  transition: border-color .2s, box-shadow .2s, background .2s;
+}
+.bx-search:focus-within {
+  border-color: rgba(124,255,0,.45);
+  box-shadow: 0 0 0 4px rgba(124,255,0,.1);
+  background: rgba(255,255,255,.07);
+}
+.bx-search input {
+  flex: 1; border: 0; background: transparent; outline: none;
+  color: var(--text); font-size: 14px; font-family: var(--font-body);
+}
+.bx-search input::placeholder { color: var(--text-muted); }
+.bx-search .kbd {
+  font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);
+  border: 1px solid var(--border); border-radius: 6px; padding: 2px 7px;
+}
+.bx-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.bx-icon-btn {
+  position: relative; width: 42px; height: 42px; border-radius: 13px;
+  display: grid; place-items: center; cursor: pointer;
+  background: rgba(255,255,255,.05); border: 1px solid var(--border);
+  color: var(--text-secondary);
+  transition: transform .15s, border-color .15s, color .15s, background .15s;
+}
+.bx-icon-btn:hover {
+  color: var(--text); border-color: var(--border-strong);
+  background: rgba(255,255,255,.09); transform: translateY(-1px);
+}
+.bx-badge {
+  position: absolute; top: -5px; right: -5px;
+  min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px;
+  background: var(--negative); color: #fff; font-size: 10px; font-weight: 800;
+  display: grid; place-items: center; border: 2px solid #0a0b0d;
+}
+.bx-wallet-chip {
+  display: flex; align-items: center; gap: 10px;
+  height: 42px; padding: 0 15px 0 13px; border-radius: 13px; cursor: pointer;
+  background: linear-gradient(135deg, rgba(124,255,0,.14), rgba(124,255,0,.05));
+  border: 1px solid rgba(124,255,0,.28);
+  transition: transform .15s, box-shadow .15s;
+}
+.bx-wallet-chip:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(124,255,0,.2); }
+.bx-wallet-chip .ic { color: var(--blaxx-lime); display: grid; place-items: center; }
+.bx-wallet-chip .v { font-weight: 800; font-size: 14px; color: #fff; letter-spacing: -.01em; line-height: 1; }
+.bx-wallet-chip .v small { display: block; color: var(--text-secondary); font-weight: 600; font-size: 10px; letter-spacing: .02em; margin-top: 2px; }
+.bx-profile {
+  display: flex; align-items: center; gap: 9px; cursor: pointer;
+  padding: 3px 8px 3px 3px; border-radius: 999px;
+  background: rgba(255,255,255,.04); border: 1px solid var(--border);
+  transition: border-color .15s;
+}
+.bx-profile:hover { border-color: var(--border-strong); }
+.bx-avatar {
+  width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
+  font-weight: 800; font-size: 13px;
+  background: linear-gradient(135deg, #7CFF00, #7CFF00); color: #08130a;
+}
+.bx-profile .nm { display: flex; flex-direction: column; line-height: 1.15; }
+.bx-profile .nm b { font-size: 13px; color: #fff; font-weight: 700; }
+.bx-profile .nm span { font-size: 11px; color: var(--blaxx-lime); font-weight: 700; letter-spacing: .03em; }
+
+/* ── Cabeçalho de página (rola sob o header glass) ───────────────── */
+.page-head { margin-bottom: 22px; }
+.page-head .eyebrow {
+  font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--blaxx-lime); display: inline-block; margin-bottom: 4px;
+}
+.page-head h1 { font-size: 30px; margin: 0; color: var(--text); letter-spacing: -.02em; }
+
+/* ── Navegação mobile: bottom tab bar + sheet "Mais" ──────────────────
+   Definidas sempre, mas ocultas (display:none) fora do mobile. O media
+   query abaixo (≤860px) habilita a tab bar e esconde a sidebar. */
+.bx-tabbar {
+  display: none;
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 95;
+  grid-template-columns: repeat(5, 1fr);
+  background: rgba(7,8,10,.85);
+  backdrop-filter: blur(22px) saturate(180%);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+  border-top: 1px solid var(--border);
+  padding: 6px 6px calc(6px + env(safe-area-inset-bottom, 0px));
+}
+.bx-tab {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 7px 0 5px; border: 0; background: transparent; cursor: pointer;
+  color: var(--text-muted); font-size: 10.5px; font-weight: 600;
+  text-decoration: none; font-family: inherit;
+  transition: color .15s;
+}
+.bx-tab .bx-tab-ic { display: grid; place-items: center; transition: transform .18s; }
+.bx-tab.active { color: var(--blaxx-lime); }
+.bx-tab.active .bx-tab-ic { transform: translateY(-1px); }
+.bx-tab.active::before {
+  content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 26px; height: 3px; border-radius: 0 0 4px 4px;
+  background: var(--blaxx-lime); box-shadow: 0 0 10px rgba(124,255,0,.6);
+}
+
+.bx-sheet-backdrop {
+  display: none;
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+}
+.bx-sheet {
+  display: none;
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 201;
+  flex-direction: column; max-height: 88vh;
+  background: linear-gradient(180deg, #0C1016, #070A0E);
+  border-top: 1px solid var(--border-strong);
+  border-radius: 22px 22px 0 0;
+  box-shadow: 0 -22px 60px rgba(0,0,0,.6);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.bx-sheet-grip {
+  width: 40px; height: 4px; border-radius: 999px;
+  background: rgba(255,255,255,.2); margin: 10px auto 2px; flex: 0 0 auto;
+}
+.bx-sheet-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 18px 14px; border-bottom: 1px solid var(--border); flex: 0 0 auto;
+}
+.bx-sheet-user { display: flex; align-items: center; gap: 12px; }
+.bx-sheet-user b { display: block; font-size: 15px; color: #fff; font-weight: 800; line-height: 1.1; }
+.bx-sheet-user span { font-size: 12px; color: var(--text-secondary); }
+.bx-sheet-x {
+  width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center;
+  background: rgba(255,255,255,.05); border: 1px solid var(--border);
+  color: var(--text-secondary); cursor: pointer; transition: color .15s, border-color .15s;
+}
+.bx-sheet-x:hover { color: #fff; border-color: var(--border-strong); }
+.bx-sheet-body { overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 8px 12px 20px; }
+.bx-sheet-sec {
+  font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(255,255,255,.32); margin: 14px 12px 6px;
+}
+.bx-sheet-link {
+  display: flex; align-items: center; gap: 14px; width: 100%;
+  padding: 13px 14px; border-radius: 14px; border: 1px solid transparent; background: transparent;
+  color: var(--text-secondary); font-size: 15px; font-weight: 500; font-family: inherit;
+  text-align: left; text-decoration: none; cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.bx-sheet-link .icon { color: var(--text-muted); display: inline-grid; place-items: center; transition: color .15s; }
+.bx-sheet-link:hover, .bx-sheet-link:active { background: rgba(255,255,255,.05); color: #fff; }
+.bx-sheet-link:hover .icon { color: #fff; }
+.bx-sheet-link.active {
+  background: linear-gradient(135deg, rgba(124,255,0,.16), rgba(124,255,0,.05));
+  border-color: rgba(124,255,0,.3); color: var(--blaxx-lime); font-weight: 700;
+}
+.bx-sheet-link.active .icon { color: var(--blaxx-lime); }
+.bx-sheet-link.logout { color: var(--negative); margin-top: 10px; }
+.bx-sheet-link.logout .icon { color: var(--negative); }
+
+/* ── Responsivo ──────────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .app-shell { grid-template-columns: 1fr; }
+  /* A sidebar dá lugar à bottom tab bar nativa. */
+  .app-shell .sidebar { display: none; }
+  .bx-header { padding: 10px 16px; gap: 10px; }
+  .bx-header-logo { display: none; }
+  .bx-wallet-chip .v small { display: none; }
+  /* espaço extra no rodapé para a tab bar fixa não cobrir o conteúdo */
+  .app-shell .main-content { padding: 18px 16px 96px; }
+  .page-head h1 { font-size: 24px; }
+  /* habilita a navegação mobile */
+  .bx-tabbar { display: grid; }
+  .bx-sheet-backdrop { display: block; }
+  .bx-sheet { display: flex; }
+  /* o FAB do WhatsApp é redundante com o ícone de mensagens do header */
+  .wa-fab { display: none !important; }
+}
+@media (max-width: 560px) {
+  .bx-search .kbd { display: none; }
+  .bx-profile .nm { display: none; }
+  .bx-wallet-chip { padding: 0 12px; }
+}

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-label="BlaXx">
+  <mask id="blaxxMark" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
+    <rect width="64" height="64" fill="#000"/>
+    <rect x="14" y="10" width="11" height="44" rx="2.5" fill="#fff"/>
+    <path d="M14 10H33a11 11 0 0 1 0 22H14Z" fill="#fff"/>
+    <path d="M14 31h21a11.5 11.5 0 0 1 0 23H14Z" fill="#fff"/>
+    <rect x="25" y="16" width="12" height="10" rx="2.5" fill="#000"/>
+    <rect x="25" y="36" width="13" height="12" rx="2.5" fill="#000"/>
+  </mask>
+  <rect width="64" height="64" fill="#7CFF00" mask="url(#blaxxMark)"/>
+</svg>

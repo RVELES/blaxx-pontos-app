@@ -1,0 +1,51 @@
+*{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:
+      radial-gradient(1200px 700px at 80% -10%, rgba(124,255,0,.10), transparent 60%),
+      radial-gradient(900px 600px at -10% 30%, rgba(120,90,240,.07), transparent 60%),
+      #08080b;
+    color:#ece8e0;
+    font-family:'Manrope',sans-serif;
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  a{color:inherit}
+  @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  ::selection{background:rgba(124,255,0,.30)}
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:8px}
+
+  .wrap{max-width:1240px;margin:0 auto}
+  .navlink{color:#b5afa3;font-size:14.5px;text-decoration:none}
+  .navlink:hover{color:#ece8e0}
+  .logocell{display:flex;align-items:center;justify-content:center;gap:12px;height:84px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.02);padding:14px;transition:all .2s}
+  .logocell:hover{background:rgba(255,255,255,.05);border-color:rgba(124,255,0,.3)}
+  .logocell img{width:30px;height:30px;object-fit:contain;border-radius:7px;flex:none}
+  .logocell span{font-family:'Sora',sans-serif;font-weight:700;font-size:15.5px;color:#d8d2c6;letter-spacing:-.3px;white-space:nowrap}
+  .chip{display:flex;align-items:center;gap:11px;padding:12px 14px;border-radius:13px;cursor:pointer;user-select:none;transition:all .2s;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02)}
+  @media(max-width:900px){
+    .grid2{grid-template-columns:1fr !important}
+    .grid4{grid-template-columns:1fr 1fr !important}
+    .grid3{grid-template-columns:1fr !important}
+    .grid5{grid-template-columns:1fr 1fr !important}
+    h1.hero{font-size:42px !important}
+    nav .menu{display:none !important}
+    nav{padding:14px 18px !important}
+    .wrap{padding-left:18px !important;padding-right:18px !important}
+    header.grid2{padding-top:44px !important;padding-bottom:24px !important;gap:30px !important}
+    #globeWrap{height:420px !important}
+  }
+  @media(max-width:560px){
+    .grid4,.grid5{grid-template-columns:1fr !important}
+    h1.hero{font-size:30px !important;letter-spacing:-1px !important}
+    h2{font-size:26px !important}
+    .kpi{font-size:28px !important}
+    nav{padding:12px 14px !important}
+    nav button{font-size:13px !important;padding:9px 12px !important}
+    .wrap{padding-left:14px !important;padding-right:14px !important}
+    #globeWrap{height:300px !important}
+    div[style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr !important}
+    div[style*="padding:48px"]{padding:24px !important}
+    div[style*="padding:60px 48px"]{padding:34px 20px !important}
+  }

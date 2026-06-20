@@ -1,0 +1,6 @@
+/* Design system canônico Blaxx (port fiel do Windows) — deve vir antes do Tailwind. */
+@import './blaxx-design-system.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

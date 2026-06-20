@@ -1,0 +1,12 @@
+# Headers de segurança da SPA (Netlify CDN).
+# Fecha B02 (clickjacking). Usa CSP só com frame-ancestors para NÃO arriscar
+# quebrar o carregamento de recursos do bundle React (default-src completo
+# fica como evolução P3, exige teste em produção).
+# frame-ancestors permite 'self' + o domínio próprio (mantém o masking atual
+# de www.blaxxpontos.com.br funcionando até o B01 ser resolvido na GoDaddy/Netlify).
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  Content-Security-Policy: frame-ancestors 'self' https://www.blaxxpontos.com.br https://blaxxpontos.com.br
