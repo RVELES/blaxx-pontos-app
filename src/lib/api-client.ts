@@ -232,11 +232,15 @@ export interface CardState {
 const DEFAULT_API = 'https://blaxx-pontos-exe.onrender.com'
 
 export function apiBase(): string {
-  try {
-    const override = localStorage.getItem('blaxx_api_url')
-    if (override) return override.replace(/\/+$/, '')
-  } catch {
-    /* storage indisponível */
+  // Override via localStorage só em dev: em produção evita repontar a API
+  // (ex.: via XSS/console) para um backend malicioso.
+  if (import.meta.env.DEV) {
+    try {
+      const override = localStorage.getItem('blaxx_api_url')
+      if (override) return override.replace(/\/+$/, '')
+    } catch {
+      /* storage indisponível */
+    }
   }
   const env = (import.meta.env.VITE_API_BASE as string | undefined)
   return (env || DEFAULT_API).replace(/\/+$/, '')
@@ -245,6 +249,12 @@ export function apiBase(): string {
 // ---------- Session ----------
 const SESSION_KEY = 'blaxx_session'
 
+// SEC-1: o token JWT agora vive em cookie httpOnly `blaxx_session` (setado
+// pelo backend, invisível pro JS). localStorage guarda APENAS metadados do
+// usuário (nome, email, tier) pra UX rápida em renders iniciais. O
+// `isLoggedIn()` agora confia na presença do `user` no storage — se o
+// cookie estiver expirado/revogado, o /auth/me devolve 401 e o handler
+// global limpa tudo.
 export const Session = {
   get(): SessionData | null {
     try {
@@ -255,24 +265,30 @@ export const Session = {
     }
   },
   set(data: SessionData) {
-    localStorage.setItem(SESSION_KEY, JSON.stringify(data))
+    // Strip do token antes de salvar — o backend já setou cookie httpOnly.
+    // (Defesa em profundidade: se algum caller passar token, a gente ignora
+    //  pra evitar regredir pra XSS-exfilable.)
+    const safe: SessionData = { ...data, token: '' }
+    localStorage.setItem(SESSION_KEY, JSON.stringify(safe))
   },
   clear() {
     localStorage.removeItem(SESSION_KEY)
   },
+  /** @deprecated SEC-1: cookie httpOnly cuida do auth. Retorna sempre null. */
   token(): string | null {
-    return this.get()?.token ?? null
+    return null
   },
   user(): User | null {
     return this.get()?.user ?? null
   },
+  /** True se há `user` no storage. O cookie cuida da autenticação real. */
   isLoggedIn(): boolean {
-    return !!this.token()
+    return !!this.user()
   },
-  /** Atualiza apenas o usuário mantendo o token (ex.: após /auth/me). */
+  /** Atualiza apenas o usuário mantendo o resto (ex.: após /auth/me). */
   setUser(user: User) {
-    const cur = this.get()
-    if (cur) this.set({ ...cur, user })
+    const cur = this.get() || { token: '', user }
+    this.set({ ...cur, user })
   },
 }
 
@@ -316,11 +332,14 @@ export async function api<T = unknown>(path: string, opts: ApiOptions = {}): Pro
   if (opts.body !== undefined && !(opts.body instanceof FormData)) {
     headers.set('Content-Type', 'application/json')
   }
-  const token = Session.token()
-  if (token) headers.set('Authorization', `Bearer ${token}`)
-
+  // SEC-1: `credentials: 'include'` faz o navegador enviar o cookie httpOnly
+  // `blaxx_session` que o backend setou no /auth/login. Sem isso, o cookie
+  // é IGNORADO em requests cross-origin (Netlify SPA → Render backend).
+  // Em paralelo, mantemos o header `Authorization` por compat caso o caller
+  // passe via opts.headers (apps embarcados / testes).
   const res = await fetch(apiBase() + path, {
     ...opts,
+    credentials: 'include',
     headers,
     body:
       opts.body === undefined
@@ -535,9 +554,10 @@ export const BlaxxAPI = {
  * a UI usa isso para mostrar "em breve". É binário, então não passa pelo api().
  */
 export async function downloadCardPass(): Promise<void> {
-  const token = Session.token()
+  // SEC-1: cookie httpOnly cuida do auth (credentials: 'include').
+  // Session.token() agora retorna null — mantido só por compat de tipos.
   const res = await fetch(apiBase() + '/card/pass', {
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    credentials: 'include',
   })
   if (!res.ok) {
     let data: unknown = {}

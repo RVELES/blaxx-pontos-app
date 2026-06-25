@@ -46,7 +46,6 @@ export default function Relatorios() {
           <span style={{ ...DEMO, position: 'absolute', top: 16, right: 16 }}>demo</span>
           <div className="section-head"><h3>Exportar</h3></div>
           <p className="muted">Relatórios mensal e anual, em CSV ou PDF, com resumo de pontos, cashback e transações.</p>
-          <div className="row mt-6" style={{ gap: 10 }}><button className="btn ghost" disabled>CSV (em breve)</button><button className="btn ghost" disabled>PDF (em breve)</button></div>
         </div>
       </div>
     </>

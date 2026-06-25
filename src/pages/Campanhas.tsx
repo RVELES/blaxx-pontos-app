@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { BlaxxAPI, Campaign, fmtBRL, fmtNumber, toast } from '../lib/api-client'
 import { Topbar } from '../components/Shell'
+import EmptyState from '../components/EmptyState'
 
 export default function Campanhas() {
   const [items, setItems] = useState<Campaign[]>([])
@@ -55,7 +56,11 @@ export default function Campanhas() {
       ) : loading ? (
         <p className="muted">Carregando…</p>
       ) : items.length === 0 ? (
-        <p className="muted">Nenhuma campanha ativa no momento.</p>
+        <EmptyState
+          icon="🎯"
+          title="Nenhuma campanha ativa agora"
+          description="Volte em breve — toda semana lançamos novas missões com pontos bônus."
+        />
       ) : (
         <div className="grid cols-2">
           {items.map((c) => {

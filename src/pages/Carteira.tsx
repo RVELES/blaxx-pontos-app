@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Topbar } from '../components/Shell'
+import EmptyState from '../components/EmptyState'
 import {
   BlaxxAPI,
   asTxArray,
@@ -113,7 +114,13 @@ export default function Carteira() {
         {loading ? (
           <p className="muted">Carregando…</p>
         ) : txs.length === 0 ? (
-          <p className="muted">Nenhuma transação ainda.</p>
+          <EmptyState
+            icon="💳"
+            title="Sua carteira vai ganhar vida em breve"
+            description="Cada compra em um parceiro vira pontos na sua carteira. Comece pelo marketplace."
+            actionLabel="Ver parceiros"
+            onAction={() => navigate('/parceiros')}
+          />
         ) : (
           <table className="blaxx">
             <thead>

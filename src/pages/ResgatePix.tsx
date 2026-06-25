@@ -58,9 +58,6 @@ export default function ResgatePix() {
               value={pixKey}
               onChange={(e) => setPixKey(e.target.value)}
             />
-            <span className="hint">
-              Dica: chaves começando com <span className="mono">fail-</span> simulam falha de payout
-            </span>
           </div>
           <div className="field">
             <label>Senha</label>

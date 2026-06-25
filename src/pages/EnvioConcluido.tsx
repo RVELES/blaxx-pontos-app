@@ -1,6 +1,7 @@
 // Envio concluído — port fiel de envio-concluido.html.
 import { useNavigate } from 'react-router-dom'
 import { fmtNumber, type TransferReceipt } from '../lib/api-client'
+import Confetti from '../components/Confetti'
 
 export default function EnvioConcluido() {
   const navigate = useNavigate()
@@ -11,6 +12,7 @@ export default function EnvioConcluido() {
 
   return (
     <div className="main center" style={{ minHeight: '70vh' }}>
+      <Confetti count={45} />
       <div className="card elevated center-text" style={{ maxWidth: 520 }}>
         <div className="success-tick">✓</div>
         <span className="eyebrow">Comprovante</span>

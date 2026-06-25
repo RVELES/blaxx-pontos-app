@@ -199,8 +199,8 @@ export default function Parceiros() {
         </button>
       </section>
 
-      {/* Filtros */}
-      <section className="pz-filters">
+      {/* Filtros — sticky para acompanhar o scroll (marketplace longo). */}
+      <section className="pz-filters blx-mkt-filters--sticky">
         <button className={'pz-pill' + (cat === '' ? ' on' : '')} onClick={() => setCat('')}>Todos</button>
         <button className={'pz-pill' + (cat === '__fav__' ? ' on' : '')} onClick={() => setCat('__fav__')}>Favoritos</button>
         {visibleCats.map((c) => (

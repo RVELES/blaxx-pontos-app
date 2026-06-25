@@ -1,31 +1,25 @@
-// BlaxxBrand — marca oficial recriada em SVG (B-mark) + wordmark "BlaXx".
-// "Bla" acompanha a superfície (claro/escuro); "Xx" sempre no verde neon da marca.
-import { useId } from 'react'
+// BlaxxBrand — marca oficial (artwork exportado do guia de marca BlaXx Rewards).
+// O símbolo e o lockup completo vêm dos SVGs oficiais servidos em /public:
+//   /blaxx_simbolo_color.svg     → símbolo "B" neon (#59FD27)
+//   /blaxx_principal_color.svg   → lockup vertical completo (B + BlaXx + REWARDS), fundos escuros
+//   /blaxx_principal_preto.svg   → lockup vertical completo em preto, fundos claros
+// O wordmark horizontal (chrome do app) usa o símbolo oficial + texto "BlaXx"
+// ("Bla" acompanha a superfície; "Xx" no verde neon da marca).
+const NEON = '#59FD27' // Verde oficial (#59FD27)
+const MARK_RATIO = 451 / 520 // proporção do símbolo oficial (blaxx_simbolo_color.svg)
 
-const NEON = '#59FD27'        // verde mais neon da paleta (Secondary)
-const NEON_DARK = '#3ab819'   // companheiro legível sobre fundo claro
-
-export function BlaxxMark({ size = 28, color }: { size?: number; color?: string }) {
-  const id = useId()
+export function BlaxxMark({ size = 28, className = '' }: { size?: number; className?: string }) {
+  const w = Math.round(size * MARK_RATIO)
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 64 64"
-      fill="none"
+    <img
+      src="/blaxx_simbolo_color.svg"
+      alt=""
       aria-hidden="true"
-      style={{ flexShrink: 0, display: 'block', color: color ?? NEON }}
-    >
-      <mask id={id} maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
-        <rect width="64" height="64" fill="#000" />
-        <rect x="14" y="10" width="11" height="44" rx="2.5" fill="#fff" />
-        <path d="M14 10H33a11 11 0 0 1 0 22H14Z" fill="#fff" />
-        <path d="M14 31h21a11.5 11.5 0 0 1 0 23H14Z" fill="#fff" />
-        <rect x="25" y="16" width="12" height="10" rx="2.5" fill="#000" />
-        <rect x="25" y="36" width="13" height="12" rx="2.5" fill="#000" />
-      </mask>
-      <rect width="64" height="64" fill="currentColor" mask={`url(#${id})`} />
-    </svg>
+      className={className}
+      width={w}
+      height={size}
+      style={{ flexShrink: 0, display: 'block', width: w, height: size }}
+    />
   )
 }
 
@@ -44,17 +38,16 @@ export function BlaxxBrand({
 }) {
   const onDark = tone === 'light'
   const baseText = onDark ? '#FFFFFF' : '#0A0A0A'
-  const neon = onDark ? NEON : NEON_DARK
   return (
     <span
       className={'bxbrand ' + className}
       style={{ display: 'inline-flex', alignItems: 'center', gap: Math.round(markSize * 0.3) }}
     >
-      <BlaxxMark size={markSize} color={neon} />
+      <BlaxxMark size={markSize} />
       {showText && (
         <span
           style={{
-            fontFamily: "'Sora', var(--font-body)",
+            fontFamily: "'Space Grotesk', var(--font-body)",
             fontWeight: 800,
             fontSize,
             letterSpacing: '-0.03em',
@@ -62,10 +55,35 @@ export function BlaxxBrand({
             color: baseText,
           }}
         >
-          Bla<span style={{ color: neon }}>Xx</span>
+          Bla<span style={{ color: NEON }}>Xx</span>
         </span>
       )}
     </span>
+  )
+}
+
+// Lockup vertical oficial completo (símbolo + "BlaXx" + "REWARDS").
+// tone='light' → versão colorida (para fundos escuros);
+// tone='dark'  → versão preta (para fundos claros).
+export function BlaxxLockup({
+  height = 140,
+  tone = 'light',
+  className = '',
+}: {
+  height?: number
+  tone?: 'light' | 'dark'
+  className?: string
+}) {
+  const src = tone === 'light' ? '/blaxx_principal_color.svg' : '/blaxx_principal_preto.svg'
+  return (
+    <img
+      src={src}
+      alt="BlaXx Rewards"
+      className={className}
+      width={height}
+      height={height}
+      style={{ width: height, height, display: 'block', objectFit: 'contain' }}
+    />
   )
 }
 

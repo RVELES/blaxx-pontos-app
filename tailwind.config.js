@@ -6,7 +6,7 @@ export default {
     extend: {
       colors: {
         black: { DEFAULT: '#0A0A0A', soft: '#1A1A1A' },
-        lime: { DEFAULT: '#7CFF00', dark: '#5AB800', light: '#F0FAD9' },
+        lime: { DEFAULT: '#C6FF00', dark: '#9ACC00', light: '#F2FFCC' },
         gray: {
           50: '#FAFAFA',
           100: '#F4F4F5',

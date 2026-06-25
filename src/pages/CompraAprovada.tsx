@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { BlaxxAPI, fmtNumber } from '../lib/api-client'
+import Confetti from '../components/Confetti'
 
 export default function CompraAprovada() {
   const navigate = useNavigate()
@@ -19,6 +20,7 @@ export default function CompraAprovada() {
 
   return (
     <div className="main center" style={{ minHeight: '70vh' }}>
+      <Confetti />
       <div className="card elevated center-text" style={{ maxWidth: 520 }}>
         <div className="success-tick">✓</div>
         <span className="eyebrow">Compra aprovada</span>

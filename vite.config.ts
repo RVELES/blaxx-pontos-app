@@ -5,7 +5,8 @@ export default defineConfig({
   plugins: [react()],
   server: { port: 8080 },
   build: {
-    sourcemap: true,
+    // Sem sourcemaps em produção: não vazar o código-fonte no bundle público.
+    sourcemap: false,
     rollupOptions: {
       output: {
         manualChunks: {

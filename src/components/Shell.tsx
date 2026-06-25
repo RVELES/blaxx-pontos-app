@@ -1,8 +1,13 @@
 // App shell premium — glass header (Logo · Busca Global · Notificações ·
 // Mensagens · Carteira · Perfil), sidebar elegante com indicador animado
 // (Framer Motion layoutId) e área principal rolável. SVG Heroicons.
-import { createContext, useContext, useEffect, useLayoutEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useLayoutEffect, useState, Suspense } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import RouteSkeleton from './RouteSkeleton'
+import HelpFAB from './HelpFAB'
+import OnboardingWizard from './OnboardingWizard'
+import CommandPalette from './CommandPalette'
+import PushOptIn from './PushOptIn'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Session, BlaxxAPI, logout, fmtNumber } from '../lib/api-client'
 import { BlaxxBrand } from './BlaxxBrand'
@@ -338,45 +343,9 @@ export function usePageTitle(title: string, eyebrow = '') {
   }, [title, eyebrow, setMeta])
 }
 
-// ─── WhatsApp FAB ────────────────────────────────────────────────────────────
-
-function WhatsAppFab() {
-  const href =
-    'https://wa.me/' +
-    WHATSAPP_NUMBER +
-    '?text=' +
-    encodeURIComponent('Olá! Preciso de ajuda com a BlaXx.')
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="wa-fab"
-      title="Falar no WhatsApp"
-      aria-label="Falar no WhatsApp"
-      style={{
-        position: 'fixed',
-        right: 22,
-        bottom: 22,
-        width: 56,
-        height: 56,
-        borderRadius: '50%',
-        background: '#25D366',
-        display: 'grid',
-        placeItems: 'center',
-        boxShadow: '0 8px 24px rgba(0,0,0,.4)',
-        zIndex: 900,
-        textDecoration: 'none',
-      }}
-    >
-      <svg width="30" height="30" viewBox="0 0 32 32" fill="#fff" aria-hidden="true">
-        <path d="M16 3C9.4 3 4 8.3 4 14.9c0 2.3.7 4.5 1.9 6.4L4 29l7.9-2.1c1.8 1 3.9 1.5 6.1 1.5 6.6 0 12-5.3 12-11.9C30 8.3 24.6 3 18 3h-2zm0 2.4c5.5 0 9.9 4.3 9.9 9.5S21.5 24.4 16 24.4c-2 0-3.9-.6-5.5-1.6l-.4-.2-4.1 1.1 1.1-4-.3-.4c-1.1-1.7-1.7-3.6-1.7-5.6 0-5.2 4.5-9.5 10-9.5zm-4.8 5c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.3 1.4 3.5c.2.2 2.4 3.8 6 5.2 3 1.2 3.6 1 4.3.9.7-.1 2.2-.9 2.5-1.8.3-.9.3-1.6.2-1.8-.1-.2-.4-.3-.8-.5-.4-.2-2.2-1.1-2.6-1.2-.3-.1-.6-.2-.8.2-.2.3-.9 1.2-1.1 1.4-.2.2-.4.2-.7.1-.4-.2-1.6-.6-3-1.9-1.1-1-1.9-2.2-2.1-2.6-.2-.3 0-.5.2-.7l.5-.6c.2-.2.2-.4.4-.6.1-.2.1-.4 0-.6-.1-.2-.8-2-1.1-2.7-.3-.7-.6-.6-.8-.6h-.7z" />
-      </svg>
-    </a>
-  )
-}
-
 // ─── Navegação mobile: bottom tab bar + sheet "Mais" ─────────────────────────
+// (WhatsAppFab antigo foi substituído por HelpFAB — botão de ajuda com FAQ
+//  inline + atalho pro WhatsApp. Importado no return desta Shell.)
 
 // Destinos primários no mobile seguem o design system da área logada
 // (Início · Mapa · Resgatar · Extrato). O 5º item "Mais" abre o sheet com a
@@ -540,16 +509,23 @@ export default function Shell() {
   return (
     <TopbarCtx.Provider value={{ meta, setMeta }}>
       <div className="app-shell">
+        {/* A11Y-1 (WCAG 2.4.1 Bypass Blocks): skip-link visível só no focus. */}
+        <a href="#main-content" className="blx-skip">Pular para o conteúdo</a>
         <Sidebar />
-        <main className="main">
+        <main id="main-content" className="main" tabIndex={-1}>
           <GlassHeader />
           <div className="main-content">
             <PageHeading />
-            <Outlet />
+            <Suspense fallback={<RouteSkeleton />}>
+              <Outlet />
+            </Suspense>
           </div>
         </main>
         <MobileNav />
-        <WhatsAppFab />
+        <HelpFAB />
+        <CommandPalette />
+        <PushOptIn />
+        <OnboardingWizard />
       </div>
     </TopbarCtx.Provider>
   )

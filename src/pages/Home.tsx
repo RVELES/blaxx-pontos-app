@@ -29,19 +29,40 @@ export default function Home() {
         document.body.appendChild(s)
         injected.push(s)
       })
-    ;(async () => {
-      try {
-        await load('/vendor/d3.min.js')
-        await load('/vendor/topojson-client.min.js')
-        if (!cancelled) await load('/blaxx-home.js')
-      } catch (e) {
-        // sem o globo, o resto da página continua funcionando
-        console.error('[home] assets do globo:', e)
-      }
-    })()
+
+    // Deixa a pintura do hero (texto + CTAs) acontecer ANTES de baixar 30+ KB
+    // de d3/topojson — o globo é decoração, não bloqueia first-paint.
+    // requestIdleCallback espera o browser ficar ocioso; fallback setTimeout
+    // para Safari (que ainda não implementa). Também checa prefers-reduced-motion:
+    // se o usuário pediu menos movimento, salta o globo inteiro.
+    const reducedMotion = typeof window !== 'undefined'
+      && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+
+    const startLoad = () => {
+      if (cancelled || reducedMotion) return
+      ;(async () => {
+        try {
+          await load('/vendor/d3.min.js')
+          await load('/vendor/topojson-client.min.js')
+          if (!cancelled) await load('/blaxx-home.js')
+        } catch (e) {
+          // sem o globo, o resto da página continua funcionando
+          console.error('[home] assets do globo:', e)
+        }
+      })()
+    }
+    const idleId =
+      typeof (window as any).requestIdleCallback === 'function'
+        ? (window as any).requestIdleCallback(startLoad, { timeout: 1500 })
+        : (window.setTimeout(startLoad, 200) as unknown as number)
 
     return () => {
       cancelled = true
+      if (typeof (window as any).cancelIdleCallback === 'function') {
+        try { (window as any).cancelIdleCallback(idleId) } catch { /* noop */ }
+      } else {
+        window.clearTimeout(idleId)
+      }
       style.remove()
       injected.forEach((s) => s.remove())
     }

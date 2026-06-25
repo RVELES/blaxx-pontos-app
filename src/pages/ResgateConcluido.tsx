@@ -1,6 +1,7 @@
 // Resgate concluído — port fiel de resgate-concluido.html (trata payout falho → estorno).
 import { useNavigate } from 'react-router-dom'
 import { fmtBRL, fmtNumber, type RedeemResult } from '../lib/api-client'
+import Confetti from '../components/Confetti'
 
 export default function ResgateConcluido() {
   const navigate = useNavigate()
@@ -9,6 +10,8 @@ export default function ResgateConcluido() {
 
   return (
     <div className="main center" style={{ minHeight: '70vh' }}>
+      {/* Celebração lime só nos casos de sucesso — falha mostra estorno sem festa. */}
+      {!failed && <Confetti />}
       <div className="card elevated center-text" style={{ maxWidth: 520 }}>
         <div className="success-tick" style={failed ? { background: 'var(--warning)' } : undefined}>
           {failed ? '↺' : '✓'}

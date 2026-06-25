@@ -101,9 +101,6 @@ export default function Checkout() {
             <label className="row" style={{ gap: 8, cursor: 'pointer' }}>
               <input type="radio" name="method" value="pix" defaultChecked /> PIX (instantâneo)
             </label>
-            <label className="row" style={{ gap: 8, color: 'var(--text-muted)' }}>
-              <input type="radio" name="method" value="card" disabled /> Cartão (em breve)
-            </label>
           </div>
           <button className="btn primary lg block mt-6" onClick={pay} disabled={paying}>
             {paying ? 'Gerando…' : 'Gerar cobrança PIX'}

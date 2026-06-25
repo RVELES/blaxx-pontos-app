@@ -3,7 +3,7 @@
 // Painel esquerdo: marca + provas sociais sobre fundo preto com acento limão.
 // Painel direito: o card do formulário (children).
 import { Link } from 'react-router-dom'
-import { BlaxxBrand } from './BlaxxBrand'
+import { BlaxxLockup } from './BlaxxBrand'
 
 type Highlight = { ico: string; text: string }
 
@@ -36,7 +36,7 @@ export default function AuthLayout({
           <Link to="/" className="auth__home" aria-label="Voltar para a home">
             <span aria-hidden="true">←</span> Voltar ao site
           </Link>
-          <BlaxxBrand className="auth__logo" markSize={34} fontSize={27} tone="light" />
+          <BlaxxLockup className="auth__logo" height={132} tone="light" />
         </div>
 
         <div className="auth__brandbody">
@@ -64,7 +64,7 @@ export default function AuthLayout({
       <main className="auth__formpane">
         <div className="auth__formwrap">
           <Link to="/" className="auth__home auth__home--mobile" aria-label="Voltar para a home">
-            <BlaxxBrand markSize={30} fontSize={24} tone="dark" />
+            <BlaxxLockup height={72} tone="dark" />
           </Link>
           {children}
         </div>
@@ -92,7 +92,7 @@ const css = `
   border: 1px solid rgba(89,253,39,.18);
 }
 .auth__brandtop { display: flex; flex-direction: column; gap: 28px; position: relative; z-index: 1; }
-.auth__logo { height: 30px; width: auto; align-self: flex-start; }
+.auth__logo { align-self: flex-start; }
 .auth__home {
   display: inline-flex; align-items: center; gap: 6px; align-self: flex-start;
   font-size: 13px; font-weight: 600; color: rgba(255,255,255,.7);
@@ -129,7 +129,7 @@ const css = `
 .auth__formpane { display: flex; align-items: center; justify-content: center; padding: 48px 24px; }
 .auth__formwrap { width: 100%; max-width: 420px; }
 .auth__home--mobile { display: none; justify-content: center; margin-bottom: 24px; }
-.auth__home--mobile img { height: 30px; }
+.auth__home--mobile img { height: 72px; }
 
 /* O card herdado dos formulários ganha respiro extra */
 .auth__formwrap .card { width: 100%; }

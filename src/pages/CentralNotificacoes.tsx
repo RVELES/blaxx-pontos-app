@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { BlaxxAPI, Notification, fmtDateTime, toast } from '../lib/api-client'
 import { Topbar } from '../components/Shell'
+import EmptyState from '../components/EmptyState'
 
 function bgFor(type?: string): string {
   switch (type) {
@@ -79,7 +80,12 @@ export default function CentralNotificacoes() {
         ) : loading ? (
           <p className="muted">Carregando…</p>
         ) : items.length === 0 ? (
-          <p className="muted">Sem notificações por enquanto.</p>
+          <EmptyState
+            icon="🔔"
+            title="Você está em dia"
+            description="Sem notificações novas. A gente avisa por aqui quando algo importante chegar."
+            size="sm"
+          />
         ) : (
           <div className="col">
             {items.map((n) => (

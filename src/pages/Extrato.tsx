@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Topbar } from '../components/Shell'
 import { BlaxxAPI, asTxArray, fmtDateTime, fmtNumber, type Transaction } from '../lib/api-client'
+import EmptyState from '../components/EmptyState'
 
 const TYPE_LABEL: Record<string, string> = {
   purchase: 'Compra de pontos',
@@ -110,9 +111,12 @@ export default function Extrato() {
             Falha ao carregar: {status}
           </p>
         ) : filtered.length === 0 ? (
-          <p className="muted" style={{ textAlign: 'center', padding: 24 }}>
-            Nenhuma transação para os filtros aplicados.
-          </p>
+          <EmptyState
+            icon="📭"
+            title="Nada por aqui ainda"
+            description="Quando você tiver transações que casam com o filtro, elas aparecem nesta lista."
+            size="sm"
+          />
         ) : (
           <table className="blaxx">
             <thead>

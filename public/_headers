@@ -1,12 +1,30 @@
 # Headers de segurança da SPA (Netlify CDN).
-# Fecha B02 (clickjacking). Usa CSP só com frame-ancestors para NÃO arriscar
-# quebrar o carregamento de recursos do bundle React (default-src completo
-# fica como evolução P3, exige teste em produção).
-# frame-ancestors permite 'self' + o domínio próprio (mantém o masking atual
-# de www.blaxxpontos.com.br funcionando até o B01 ser resolvido na GoDaddy/Netlify).
+#
+# CSP com default-src 'self', origens auditadas a partir do que a SPA carrega:
+#  - scripts: só same-origin (bundle + /vendor d3/topojson + /blaxx-home.js).
+#    'unsafe-inline'/'unsafe-eval' ainda são necessários por causa dos handlers
+#    onclick inline do shell da Home e do `new Function` do d3-dsv. Removê-los
+#    (refatorar o shell pra addEventListener) é o passo P3 para endurecer script-src.
+#  - styles: bundle + style attrs inline da UI (Space Grotesk agora é self-hosted).
+#  - fonts: APENAS same-origin (self-hosted /fonts/space-grotesk-latin.woff2) + data:.
+#  - img: same-origin, data: e https: (logos de parceiros remotos).
+#  - connect: só o backend no Render (bloqueia exfiltração pra outras origens).
+# frame-ancestors mantém o masking de www.blaxxpontos.com.br.
+# COOP/CORP isolam contexto cross-origin (defesa em profundidade vs Spectre etc).
+# NOTA: testar em produção (Netlify) antes de confiar — _headers não roda no Vite local.
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-  Content-Security-Policy: frame-ancestors 'self' https://www.blaxxpontos.com.br https://blaxxpontos.com.br
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https:; connect-src 'self' https://blaxx-pontos-exe.onrender.com https://*.onrender.com; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self' https://www.blaxxpontos.com.br https://blaxxpontos.com.br
+
+# Cache longo para assets imutáveis (Vite gera hash no nome do arquivo)
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Fonts self-hosted: imutáveis (~1 ano)
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable

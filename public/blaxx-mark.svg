@@ -1,11 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-label="BlaXx">
-  <mask id="blaxxMark" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
-    <rect width="64" height="64" fill="#000"/>
-    <rect x="14" y="10" width="11" height="44" rx="2.5" fill="#fff"/>
-    <path d="M14 10H33a11 11 0 0 1 0 22H14Z" fill="#fff"/>
-    <path d="M14 31h21a11.5 11.5 0 0 1 0 23H14Z" fill="#fff"/>
-    <rect x="25" y="16" width="12" height="10" rx="2.5" fill="#000"/>
-    <rect x="25" y="36" width="13" height="12" rx="2.5" fill="#000"/>
-  </mask>
-  <rect width="64" height="64" fill="#7CFF00" mask="url(#blaxxMark)"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 861 1000" fill="none" role="img" aria-label="BlaXx">
+  <defs>
+    <mask id="bm" maskUnits="userSpaceOnUse" x="0" y="0" width="861" height="1000">
+      <path d="M0.0,0.0 L541.56,0.0 A285.0,285.0 0 0 1 826.56,285.0 L826.56,285.0 A285.0,285.0 0 0 1 541.56,570.0 L0.0,570.0 L0.0,0.0 Z" fill="#fff"/>
+      <path d="M0.0,410.0 L566.0,410.0 A295.0,295.0 0 0 1 861.0,705.0 L861.0,705.0 A295.0,295.0 0 0 1 566.0,1000.0 L0.0,1000.0 L0.0,410.0 Z" fill="#fff"/>
+      <rect x="0.0" y="0.0" width="143.79" height="1000.0" fill="#fff"/>
+      <path d="M143.79,140.0 L536.58,140.0 A135.0,135.0 0 0 1 671.58,275.0 L671.58,275.0 A135.0,135.0 0 0 1 536.58,410.0 L143.79,410.0 L143.79,140.0 Z" fill="#000"/>
+      <path d="M143.79,570.0 L576.43,570.0 A142.5,142.5 0 0 1 718.93,712.5 L718.93,712.5 A142.5,142.5 0 0 1 576.43,855.0 L143.79,855.0 L143.79,570.0 Z" fill="#000"/>
+      <polygon points="143.79,410.0 219.56,410.0 365.93,570.0 271.21,570.0" fill="#000"/>
+    </mask>
+  </defs>
+  <rect width="861" height="1000" fill="#C6FF00" mask="url(#bm)"/>
 </svg>

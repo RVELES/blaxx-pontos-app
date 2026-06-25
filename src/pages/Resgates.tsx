@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { BlaxxAPI, Benefit, Voucher, fmtNumber } from '../lib/api-client'
 import { Topbar } from '../components/Shell'
+import EmptyState from '../components/EmptyState'
 
 type View = 'all' | 'mine'
 
@@ -66,7 +67,13 @@ export default function Resgates() {
         <p className="muted">Carregando…</p>
       ) : view === 'all' ? (
         benefits.length === 0 ? (
-          <p className="muted">Nenhum benefício disponível.</p>
+          <EmptyState
+            icon="🎁"
+            title="Nenhum benefício disponível agora"
+            description="Novas ofertas dos parceiros entram aqui toda semana. Volte em breve ou explore o marketplace."
+            actionLabel="Ver parceiros"
+            onAction={() => navigate('/parceiros')}
+          />
         ) : (
           <div className="grid cols-3">
             {benefits.map((b) => (
@@ -103,9 +110,13 @@ export default function Resgates() {
           </div>
         )
       ) : vouchers.length === 0 ? (
-        <p className="muted">
-          Você ainda não tem vouchers. Resgate um benefício para começar.
-        </p>
+        <EmptyState
+          icon="✨"
+          title="Você ainda não tem vouchers"
+          description="Resgate um benefício e ele aparece aqui — disponível pra usar com 1 toque."
+          actionLabel="Ver benefícios disponíveis"
+          onAction={() => setView('all')}
+        />
       ) : (
         <table className="blaxx">
           <thead>

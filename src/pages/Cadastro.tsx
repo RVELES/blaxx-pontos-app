@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { BlaxxAPI, Session, toast } from '../lib/api-client'
 import { STRENGTH_COLORS, maskCPF, passwordStrength } from '../lib/password'
 import AuthLayout from '../components/AuthLayout'
+import { flagOnboardingPending } from '../components/OnboardingWizard'
 
 const DRAFT_KEY = 'blaxx_signup_draft'
 const DEFAULT_HINT = 'Use maiúscula, minúscula, número e caractere especial.'
@@ -120,9 +121,11 @@ export default function Cadastro() {
       sessionStorage.removeItem(DRAFT_KEY)
       if (data && data.token) {
         Session.set({ token: data.token, user: data.user })
+        flagOnboardingPending()  // mostra wizard de 3 passos na 1ª entrada
         toast('Conta criada! Bem-vindo, ' + (data.user?.name || '').split(' ')[0], 'success')
         setTimeout(() => navigate('/dashboard'), 600)
       } else {
+        flagOnboardingPending()  // dispara após validar e-mail
         toast('Conta criada! Verifique seu e-mail para ativar.', 'success', 3000)
         setTimeout(() => navigate('/validacao'), 1200)
       }

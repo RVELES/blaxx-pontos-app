@@ -18,6 +18,10 @@ import {
   Tooltip,
 } from 'chart.js'
 import { Topbar } from '../components/Shell'
+import PointsEquivalence from '../components/PointsEquivalence'
+import BlaxxScore from '../components/BlaxxScore'
+import { usePullToRefresh, PullToRefreshIndicator } from '../lib/use-pull-to-refresh'
+import { evaluate as evalBadges } from '../lib/badges'
 import {
   BlaxxAPI,
   Session,
@@ -253,28 +257,34 @@ export default function Dashboard() {
   const [txs, setTxs] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
 
+  // Carrega tudo em paralelo. Extraído pra reusar em pull-to-refresh.
+  async function loadAll(silent = false) {
+    if (!silent) setLoading(true)
+    const [w, c, p, cm, t] = await Promise.allSettled([
+      BlaxxAPI.wallet(),
+      BlaxxAPI.card(),
+      BlaxxAPI.partners(),
+      BlaxxAPI.campaigns(),
+      BlaxxAPI.transactions(6),
+    ])
+    if (w.status === 'fulfilled') setWallet(w.value)
+    if (c.status === 'fulfilled') setCard(c.value)
+    if (p.status === 'fulfilled') setPartners((p.value.items || []).slice(0, 4))
+    if (cm.status === 'fulfilled') setCampaigns((cm.value.items || []).slice(0, 3))
+    if (t.status === 'fulfilled') setTxs(asTxArray(t.value).slice(0, 6))
+    if (!silent) setLoading(false)
+  }
   useEffect(() => {
     let alive = true
     ;(async () => {
-      const [w, c, p, cm, t] = await Promise.allSettled([
-        BlaxxAPI.wallet(),
-        BlaxxAPI.card(),
-        BlaxxAPI.partners(),
-        BlaxxAPI.campaigns(),
-        BlaxxAPI.transactions(6),
-      ])
+      await loadAll()
       if (!alive) return
-      if (w.status === 'fulfilled') setWallet(w.value)
-      if (c.status === 'fulfilled') setCard(c.value)
-      if (p.status === 'fulfilled') setPartners((p.value.items || []).slice(0, 4))
-      if (cm.status === 'fulfilled') setCampaigns((cm.value.items || []).slice(0, 3))
-      if (t.status === 'fulfilled') setTxs(asTxArray(t.value).slice(0, 6))
-      setLoading(false)
     })()
-    return () => {
-      alive = false
-    }
+    return () => { alive = false }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+  // Pull-to-refresh — só ativa em mobile. Silent: não pisca skeletons.
+  const ptr = usePullToRefresh(() => loadAll(true))
 
   const user = Session.user()
   const firstName = (user?.name || '').split(' ')[0] || 'Cliente'
@@ -305,6 +315,7 @@ export default function Dashboard() {
     <div className="dx">
       {/* limpa o cabeçalho de página — o hero carrega a saudação */}
       <Topbar eyebrow="" title="" />
+      <PullToRefreshIndicator state={ptr} />
 
       {/* ============ HERO ============ */}
       <motion.section className="dx-hero" variants={reveal} initial="hidden" animate="show" custom={0}>
@@ -318,6 +329,14 @@ export default function Dashboard() {
               {loading ? '—' : fmtNumber(balancePts)} <span>pts</span>
             </div>
             <div className="dx-equiv">≈ {loading ? 'R$ —' : fmtBRL(balanceBrl)}</div>
+            {!loading && balancePts > 0 && (
+              <PointsEquivalence
+                balancePts={balancePts}
+                balanceBrl={balanceBrl}
+                visibleCount={2}
+                className="blx-equiv--on-dark"
+              />
+            )}
             <div className="dx-var">
               <span className={'dx-var-pill ' + (var30 >= 0 ? 'up' : 'down')}>
                 {var30 >= 0 ? '▲' : '▼'} {pct(var30)}
@@ -336,16 +355,36 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* NÍVEL / PROGRESSO (Amex-style) */}
+          {/* NÍVEL / PROGRESSO (Amex-style, refinado: brilho metálico + perks em chips) */}
           <div className="dx-level">
-            <div className="dx-level-card" style={tier ? { background: tier.color, color: tier.text_color } : undefined}>
+            <motion.div
+              className="dx-level-card dx-level-card--shine"
+              style={tier ? { background: tier.color, color: tier.text_color } : undefined}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: EASE }}
+            >
+              <div className="dx-level-shine" aria-hidden />
               <div className="dx-level-row">
                 <span className="dx-level-chip">NÍVEL</span>
                 <Svg d={P.trophy} size={20} />
               </div>
               <div className="dx-level-name">{tier ? tier.label.toUpperCase() : '—'}</div>
-              <div className="dx-level-sub">{tier?.perks || 'Programa de fidelidade BlaXx'}</div>
-            </div>
+              {tier?.perks ? (
+                <ul className="dx-level-perks">
+                  {tier.perks
+                    .split(/[,·;]+/)
+                    .map((p) => p.trim())
+                    .filter(Boolean)
+                    .slice(0, 4)
+                    .map((p) => (
+                      <li key={p}>{p}</li>
+                    ))}
+                </ul>
+              ) : (
+                <div className="dx-level-sub">Programa de fidelidade BlaXx</div>
+              )}
+            </motion.div>
             <div className="dx-prog">
               <div className="dx-prog-head">
                 <span>{nextTier ? `Progresso para ${nextTier.label}` : 'Nível máximo'}</span>
@@ -372,6 +411,42 @@ export default function Dashboard() {
 
         {/* GRÁFICO */}
         <PatrimonioChart end={chartEnd} />
+      </motion.section>
+
+      {/* ============ BLAXX SCORE + CONQUISTAS — saúde de pontos + descoberta ============ */}
+      <motion.section
+        variants={reveal} initial="hidden" animate="show" custom={0.7}
+        style={{ marginTop: 18, display: 'grid', gridTemplateColumns: 'minmax(0,2fr) minmax(0,1fr)', gap: 14 }}
+        className="dx-score-row"
+      >
+        <BlaxxScore wallet={wallet} card={card} txs={txs} />
+        {(() => {
+          const states = evalBadges({ wallet, card, txs })
+          const unlocked = states.filter((s) => s.unlocked).length
+          const next = states.find((s) => !s.unlocked)
+          return (
+            <button
+              type="button"
+              className="dx-tile-ach"
+              onClick={() => navigate('/conquistas')}
+              aria-label={`Ver conquistas — ${unlocked} de ${states.length}`}
+            >
+              <span className="dx-tile-ach__eyebrow">CONQUISTAS</span>
+              <strong className="dx-tile-ach__big">
+                {unlocked}<span>/{states.length}</span>
+              </strong>
+              {next ? (
+                <span className="dx-tile-ach__next">
+                  <span aria-hidden>{next.def.emoji}</span>
+                  Próxima · <b>{next.def.label}</b>
+                </span>
+              ) : (
+                <span className="dx-tile-ach__next">Todas conquistadas — 🎉</span>
+              )}
+              <span className="dx-tile-ach__cta">Ver tudo →</span>
+            </button>
+          )
+        })()}
       </motion.section>
 
       {/* ============ CTAs ============ */}

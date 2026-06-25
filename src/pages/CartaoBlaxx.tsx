@@ -17,6 +17,7 @@ export default function CartaoBlaxx() {
   const [card, setCard] = useState<CardState | null>(null)
   const [loading, setLoading] = useState(true)
   const [adding, setAdding] = useState(false)
+  const [flipped, setFlipped] = useState(false)
 
   useEffect(() => {
     let alive = true
@@ -58,10 +59,24 @@ export default function CartaoBlaxx() {
         <p className="muted">Não foi possível carregar o cartão.</p>
       ) : (
         <div className="grid cols-2" style={{ gridTemplateColumns: '1.4fr 1fr' }}>
-          {/* Cartão visual com a cor do nível atual */}
+          {/* Cartão visual com a cor do nível atual — clicável vira pro verso */}
           <div className="col">
             <div
-              className="balance-card"
+              className={'card-flip' + (flipped ? ' is-flipped' : '')}
+              role="button"
+              tabIndex={0}
+              aria-pressed={flipped}
+              aria-label={flipped ? 'Verso do cartão — clique para virar' : 'Frente do cartão — clique para ver o verso'}
+              onClick={() => setFlipped((f) => !f)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  setFlipped((f) => !f)
+                }
+              }}
+            >
+            <div
+              className="balance-card card-flip__face card-flip__front"
               style={{
                 background: tier?.color || '#0B0B0C',
                 color: tier?.text_color || '#fff',
@@ -132,12 +147,66 @@ export default function CartaoBlaxx() {
                 </div>
               )}
             </div>
+            {/* VERSO — tier + perks listados + cardholder full + dica de flip */}
+            <div
+              className="balance-card card-flip__face card-flip__back"
+              style={{
+                background: tier?.color || '#0B0B0C',
+                color: tier?.text_color || '#fff',
+              }}
+            >
+              <div className="row between">
+                <div className="label" style={{ color: tier?.text_color, opacity: 0.85 }}>
+                  BlaXx · {tier?.label || '—'}
+                </div>
+                <div
+                  className="chip"
+                  style={{
+                    background: 'rgba(255,255,255,.14)',
+                    color: tier?.text_color,
+                    border: '1px solid rgba(255,255,255,.25)',
+                  }}
+                >
+                  MEMBRO
+                </div>
+              </div>
+
+              <div style={{ marginTop: 18, fontSize: 12, opacity: 0.88, color: tier?.text_color }}>
+                <div style={{ fontWeight: 800, marginBottom: 6, letterSpacing: 0.4, fontSize: 11, textTransform: 'uppercase' }}>
+                  Benefícios do nível
+                </div>
+                {tier?.perks ? (
+                  <ul className="card-flip__perks">
+                    {tier.perks
+                      .split(/[,·;]+/)
+                      .map((p) => p.trim())
+                      .filter(Boolean)
+                      .slice(0, 6)
+                      .map((p) => (
+                        <li key={p}>{p}</li>
+                      ))}
+                  </ul>
+                ) : (
+                  <p style={{ margin: 0 }}>Programa de fidelidade BlaXx</p>
+                )}
+              </div>
+
+              <div style={{ marginTop: 'auto', paddingTop: 18, fontSize: 12, opacity: 0.88 }}>
+                <div style={{ color: tier?.text_color, opacity: 0.95, fontWeight: 700 }}>
+                  {card.member.name}
+                </div>
+                <div style={{ color: tier?.text_color, opacity: 0.7, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace', fontSize: 11 }}>
+                  ID {card.member.id}
+                </div>
+              </div>
+            </div>
+            </div>{/* /card-flip */}
 
             <button
               className="btn primary mt-6"
               style={{ width: '100%' }}
               disabled={adding || !walletAvailable}
-              onClick={handleAddToWallet}
+              onClick={(e) => { e.stopPropagation(); handleAddToWallet() }}
               title={
                 walletAvailable
                   ? 'Adicionar à Apple Wallet'
