@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://blaxxpontos.com.br/sitemap.xml
+Sitemap: https://www.blaxxpontos.com.br/sitemap.xml

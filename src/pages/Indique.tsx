@@ -7,7 +7,7 @@ import { Session, toast } from '../lib/api-client'
 import { Topbar } from '../components/Shell'
 
 const REFERRAL_CODE = 'BLAXX-A7K3'
-const SITE_URL = 'https://blaxxpontos.com.br'
+const SITE_URL = 'https://www.blaxxpontos.com.br'
 
 // Constrói URL com UTM por canal. Mantém a `ref` mesmo se UTM forem
 // ignorados — backend usa só a `ref` como fonte de verdade.
