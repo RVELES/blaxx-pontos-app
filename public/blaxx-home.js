@@ -7,7 +7,7 @@
 const CONFIG = {
   // -- Marca / tema --
   brandName: 'BlaXx',
-  accent: '#7CFF00',          // cor de destaque (verde limão)
+  accent: '#59FD27',          // cor de destaque (verde neon)
 
   // -- Cartão de saldo do hero (apenas exibição) --
   hero: {
@@ -173,22 +173,22 @@ const CONFIG = {
   $('heroBalance').textContent = CONFIG.hero.balance;
   $('heroBalancePix').textContent = CONFIG.hero.balancePix;
   $('heroStats').innerHTML = CONFIG.heroStats.map(s =>
-    `<div><div style="font-family:'Sora',sans-serif;font-weight:700;font-size:24px;color:#fff">${esc(s.value)}</div><div style="font-size:13px;color:#8b867b">${esc(s.label)}</div></div>`
+    `<div><div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:24px;color:#fff">${esc(s.value)}</div><div style="font-size:13px;color:#8b867b">${esc(s.label)}</div></div>`
   ).join('');
 
   // trust strip
   $('trustStrip').innerHTML = CONFIG.trust.map(s =>
-    `<div style="background:#0b0b10;padding:26px 24px;text-align:center"><div style="font-family:'Sora',sans-serif;font-weight:700;font-size:30px;color:#fff">${esc(s.value)}</div><div style="font-size:13.5px;color:#8b867b;margin-top:4px">${esc(s.label)}</div></div>`
+    `<div style="background:#0b0b10;padding:26px 24px;text-align:center"><div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:30px;color:#fff">${esc(s.value)}</div><div style="font-size:13.5px;color:#8b867b;margin-top:4px">${esc(s.label)}</div></div>`
   ).join('');
 
   // steps
   $('stepsGrid').innerHTML = CONFIG.steps.map(s => {
     const bg = s.highlight ? 'linear-gradient(160deg,rgba(22,30,10,.85),rgba(13,16,9,.85))' : 'linear-gradient(160deg,rgba(22,22,28,.8),rgba(13,13,18,.8))';
-    const bd = s.highlight ? 'rgba(124,255,0,.25)' : 'rgba(255,255,255,.08)';
+    const bd = s.highlight ? 'rgba(89,253,39,.25)' : 'rgba(255,255,255,.08)';
     const dc = s.highlight ? '#c3d3a8' : '#9a958c';
     return `<div style="background:${bg};border:1px solid ${bd};border-radius:20px;padding:28px">
       <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);margin-bottom:18px">${esc(s.n)}</div>
-      <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:21px;color:#fff;margin-bottom:10px">${esc(s.title)}</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:21px;color:#fff;margin-bottom:10px">${esc(s.title)}</div>
       <p style="font-size:14.5px;line-height:1.6;color:${dc};margin:0">${esc(s.desc)}</p></div>`;
   }).join('');
 
@@ -196,7 +196,7 @@ const CONFIG = {
   $('perksGrid').innerHTML = CONFIG.perks.map(p =>
     `<div style="background:linear-gradient(160deg,rgba(22,22,28,.7),rgba(13,13,18,.7));border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:28px">
       <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);margin-bottom:16px">${esc(p.tag)}</div>
-      <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:19px;color:#fff;margin-bottom:9px">${esc(p.title)}</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;color:#fff;margin-bottom:9px">${esc(p.title)}</div>
       <p style="font-size:14px;line-height:1.6;color:#9a958c;margin:0">${esc(p.desc)}</p></div>`
   ).join('');
 
@@ -206,21 +206,31 @@ const CONFIG = {
       <div style="color:var(--accent);font-size:15px;margin-bottom:14px">★★★★★</div>
       <p style="font-size:15px;line-height:1.65;color:#cfc9bd;margin:0 0 22px">${esc(r.text)}</p>
       <div style="display:flex;align-items:center;gap:12px">
-        <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#2a2a34,#16161c);display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-weight:700;color:var(--accent)">${esc(r.initial)}</div>
+        <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#2a2a34,#16161c);display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--accent)">${esc(r.initial)}</div>
         <div><div style="font-size:14px;font-weight:700;color:#fff">${esc(r.name)}</div><div style="font-size:12.5px;color:#8b867b">${esc(r.role)}</div></div>
       </div></div>`
   ).join('');
 
-  // brands / logos
-  function logoSrc(b){ return b.logo ? b.logo : 'https://www.google.com/s2/favicons?domain=' + b.domain + '&sz=128'; }
-  function renderBrands(id, list){
-    $(id).innerHTML = list.map(b =>
-      `<div class="logocell"><img src="${esc(logoSrc(b))}" alt="${esc(b.name)}" onerror="this.style.display='none'"><span>${esc(b.name)}</span></div>`
-    ).join('');
+  // brands / logos — cada parceiro num "quadro de cor" da legenda do globo.
+  // Logo nítido sobre chip branco; cai para favicon e, por fim, monograma.
+  function logoSrc(b){ return b.logo ? b.logo : 'https://logo.clearbit.com/' + b.domain; }
+  function monogram(n){ const w = n.trim().split(/\s+/); return (w.length >= 2 ? w[0][0] + w[1][0] : n.slice(0,2)).toUpperCase(); }
+  function renderBrands(id, list, rgb){
+    $(id).innerHTML = list.map(b => {
+      const fb = 'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(b.domain) + '&sz=128';
+      return `<div class="logocell" style="--c:${rgb}">
+        <div class="logoframe"><div class="logochip">
+          <span class="logomono">${esc(monogram(b.name))}</span>
+          <img class="logoimg" src="${esc(logoSrc(b))}" alt="${esc(b.name)}" loading="lazy" data-fb="${fb}"
+               onload="this.previousElementSibling.style.opacity=0"
+               onerror="if(this.dataset.fb){this.src=this.dataset.fb;this.dataset.fb=''}else{this.remove()}">
+        </div></div>
+        <span class="logoname">${esc(b.name)}</span></div>`;
+    }).join('');
   }
-  renderBrands('brandsMiles',  CONFIG.brands.miles);
-  renderBrands('brandsHotels', CONFIG.brands.hotels);
-  renderBrands('brandsVip',    CONFIG.brands.vip);
+  renderBrands('brandsMiles',  CONFIG.brands.miles,  '231,178,74');
+  renderBrands('brandsHotels', CONFIG.brands.hotels, '79,201,106');
+  renderBrands('brandsVip',    CONFIG.brands.vip,    '63,198,216');
 
   // ---------- ESTADO DO MAPA ----------
   const SUP = CONFIG.suppliers, POINTS = CONFIG.points;
@@ -238,20 +248,10 @@ const CONFIG = {
           <span style="display:block;font-size:11.5px;color:#8b867b">${esc(s.cat)} · ${cnt}</span>
         </span></div>`;
     }).join('');
-    $('legend').querySelectorAll('.chip').forEach(el => el.onclick = () => { active[el.dataset.key] = !active[el.dataset.key]; renderLegend(); renderLocList(); updateTotal(); });
-  }
-  function renderLocList(){
-    $('locList').innerHTML = POINTS.map(p => {
-      const s = SUP[p.s], on = active[p.s];
-      const dot = `width:8px;height:8px;border-radius:50%;background:rgb(${s.rgb});flex:none;box-shadow:0 0 8px rgb(${s.rgb})`;
-      return `<div style="display:flex;align-items:center;gap:10px;padding:9px 4px;border-bottom:1px solid rgba(255,255,255,0.05);opacity:${on?1:0.28};transition:opacity .2s">
-        <span style="${dot}"></span>
-        <span style="flex:1;font-size:13px;color:#ece8e0">${esc(p.c)}</span>
-        <span style="font-size:11.5px;color:#8b867b">${esc(s.name)}</span></div>`;
-    }).join('');
+    $('legend').querySelectorAll('.chip').forEach(el => el.onclick = () => { active[el.dataset.key] = !active[el.dataset.key]; renderLegend(); updateTotal(); });
   }
   function updateTotal(){ $('totalActive').textContent = POINTS.filter(p => active[p.s]).length; }
-  renderLegend(); renderLocList(); updateTotal();
+  renderLegend(); updateTotal();
 
   // ---------- CALCULADORA ----------
   const range = $('calcRange'); range.value = CONFIG.calc.defaultPoints;
@@ -294,10 +294,10 @@ const CONFIG = {
       const Wc = canvas.width/dpr, Hc = canvas.height/dpr;
       ctx.setTransform(dpr,0,0,dpr,0,0);
       ctx.clearRect(0,0,Wc,Hc);
-      const cx = Wc/2, cy = Hc/2, R = Math.min(Wc,Hc)*0.42;
+      const cx = Wc/2, cy = Hc/2, R = Math.min(Wc,Hc)*0.47;
 
       let atm = ctx.createRadialGradient(cx,cy,R*0.88,cx,cy,R*1.28);
-      atm.addColorStop(0,'rgba(124,255,0,0.10)'); atm.addColorStop(1,'rgba(124,255,0,0)');
+      atm.addColorStop(0,'rgba(89,253,39,0.10)'); atm.addColorStop(1,'rgba(89,253,39,0)');
       ctx.fillStyle = atm; ctx.beginPath(); ctx.arc(cx,cy,R*1.28,0,7); ctx.fill();
       let sph = ctx.createRadialGradient(cx-R*0.35,cy-R*0.35,R*0.1,cx,cy,R);
       sph.addColorStop(0,'#1a2230'); sph.addColorStop(0.65,'#0e131c'); sph.addColorStop(1,'#070709');
@@ -305,11 +305,14 @@ const CONFIG = {
 
       const proj = d3.geoOrthographic().translate([cx,cy]).scale(R).rotate([rotL,rotP]).clipAngle(90);
       const path = d3.geoPath(proj, ctx);
-      ctx.beginPath(); path(d3.geoGraticule10()); ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 0.5; ctx.stroke();
-      ctx.beginPath(); path(land); ctx.fillStyle = 'rgba(58,62,80,0.95)'; ctx.fill();
-      ctx.beginPath(); path(coast); ctx.strokeStyle = 'rgba(186,190,214,0.55)'; ctx.lineWidth = 0.8; ctx.stroke();
-      ctx.beginPath(); path(borders); ctx.strokeStyle = 'rgba(132,136,166,0.42)'; ctx.lineWidth = 0.5; ctx.stroke();
-      ctx.beginPath(); ctx.arc(cx,cy,R,0,7); ctx.strokeStyle = 'rgba(124,255,0,0.25)'; ctx.lineWidth = 1; ctx.stroke();
+      ctx.beginPath(); path(d3.geoGraticule10()); ctx.strokeStyle = 'rgba(255,255,255,0.045)'; ctx.lineWidth = 0.5; ctx.stroke();
+      ctx.beginPath(); path(land); ctx.fillStyle = 'rgba(46,50,66,0.95)'; ctx.fill();
+      // Fronteiras verde BlaXx (#59FD27), bem definidas (brilho difuso + traço nítido)
+      ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+      ctx.beginPath(); path(coast); ctx.strokeStyle = 'rgba(89,253,39,0.22)'; ctx.lineWidth = 2.8; ctx.stroke();
+      ctx.beginPath(); path(coast); ctx.strokeStyle = 'rgba(89,253,39,0.95)'; ctx.lineWidth = 1.2; ctx.stroke();
+      ctx.beginPath(); path(borders); ctx.strokeStyle = 'rgba(89,253,39,0.55)'; ctx.lineWidth = 0.7; ctx.stroke();
+      ctx.beginPath(); ctx.arc(cx,cy,R,0,7); ctx.strokeStyle = 'rgba(89,253,39,0.25)'; ctx.lineWidth = 1; ctx.stroke();
 
       for (const m of POINTS){
         m._vis = false;
@@ -347,7 +350,7 @@ const CONFIG = {
         const id = best.s + best.c;
         if (id !== hoverId){
           hoverId = id;
-          tipEl.innerHTML = `<div style="font-family:'Sora',sans-serif;font-weight:700;font-size:14px;color:#fff">${esc(best.c)}</div><div style="font-size:12px;color:#9a958c;margin-top:2px">${esc(SUP[best.s].name)} · ${esc(SUP[best.s].cat)}</div>`;
+          tipEl.innerHTML = `<div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:#fff">${esc(best.c)}</div><div style="font-size:12px;color:#9a958c;margin-top:2px">${esc(SUP[best.s].name)} · ${esc(SUP[best.s].cat)}</div>`;
           tipEl.style.display = 'block';
         }
         tipEl.style.left = best._sx + 'px'; tipEl.style.top = best._sy + 'px'; tipEl.style.transform = 'translate(-50%,-145%)';
