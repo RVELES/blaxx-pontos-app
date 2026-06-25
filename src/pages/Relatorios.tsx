@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { Topbar } from '../components/Shell'
 import { BlaxxAPI, fmtBRL, fmtNumber, type CardState, type Wallet } from '../lib/api-client'
 
-const DEMO = { fontSize: 10, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase' as const, color: '#7a9e00', background: 'rgba(124,255,0,.14)', border: '1px solid rgba(124,255,0,.4)', padding: '3px 8px', borderRadius: 999 }
+const DEMO = { fontSize: 10, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase' as const, color: '#7a9e00', background: 'rgba(89,253,39,.14)', border: '1px solid rgba(89,253,39,.4)', padding: '3px 8px', borderRadius: 999 }
 
 export default function Relatorios() {
   const [wallet, setWallet] = useState<Wallet | null>(null)
@@ -28,8 +28,8 @@ export default function Relatorios() {
         <span style={{ ...DEMO, position: 'absolute', top: 16, right: 16 }}>demo</span>
         <div className="section-head"><h3>Evolução de pontos (12 meses)</h3></div>
         <svg viewBox="0 0 600 180" style={{ width: '100%', height: 180 }} preserveAspectRatio="none">
-          <path d="M10 150 C70 130 110 140 160 100 S250 70 300 95 S400 130 450 70 S540 40 590 22" fill="none" stroke="#7CFF00" strokeWidth="4" strokeLinecap="round" />
-          <path d="M10 150 C70 130 110 140 160 100 S250 70 300 95 S400 130 450 70 S540 40 590 22 L590 180 L10 180 Z" fill="rgba(124,255,0,.12)" />
+          <path d="M10 150 C70 130 110 140 160 100 S250 70 300 95 S400 130 450 70 S540 40 590 22" fill="none" stroke="#59FD27" strokeWidth="4" strokeLinecap="round" />
+          <path d="M10 150 C70 130 110 140 160 100 S250 70 300 95 S400 130 450 70 S540 40 590 22 L590 180 L10 180 Z" fill="rgba(89,253,39,.12)" />
         </svg>
         <p className="muted" style={{ fontSize: 12, marginTop: 8 }}>Gráfico ilustrativo. Exportação CSV/PDF e relatório fiscal entrarão com a base histórica completa.</p>
       </div>

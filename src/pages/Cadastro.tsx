@@ -271,7 +271,7 @@ export default function Cadastro() {
                   required
                   checked={accepted}
                   onChange={(e) => setAccepted(e.target.checked)}
-                  style={{ appearance: 'auto', WebkitAppearance: 'checkbox', marginTop: 3, padding: 0, border: 'none', flexShrink: 0, width: 18, height: 18, cursor: 'pointer', accentColor: '#7CFF00' }}
+                  style={{ appearance: 'auto', WebkitAppearance: 'checkbox', marginTop: 3, padding: 0, border: 'none', flexShrink: 0, width: 18, height: 18, cursor: 'pointer', accentColor: '#59FD27' }}
                 />
                 <label htmlFor="accept-terms" style={{ fontSize: 13, lineHeight: 1.5, cursor: 'pointer', flex: 1 }}>
                   Li e aceito os{' '}
@@ -338,9 +338,9 @@ const wizardCss = `
   color: var(--text-muted, #888); border: 2px solid transparent; transition: all .2s ease;
 }
 .wz-step .wz-label { font-size: 11px; color: var(--text-muted, #999); text-align: center; font-weight: 600; }
-.wz-step.is-active .wz-dot { background: var(--blaxx-lime, #7CFF00); color: var(--blaxx-black, #0A0A0A); }
+.wz-step.is-active .wz-dot { background: var(--blaxx-lime, #59FD27); color: var(--blaxx-black, #0A0A0A); }
 .wz-step.is-active .wz-label { color: var(--text, #111); }
-.wz-step.is-done .wz-dot { background: var(--blaxx-black, #0A0A0A); color: var(--blaxx-lime, #7CFF00); }
+.wz-step.is-done .wz-dot { background: var(--blaxx-black, #0A0A0A); color: var(--blaxx-lime, #59FD27); }
 /* linha conectora */
 .wz-step::after {
   content: ''; position: absolute; top: 15px; left: calc(50% + 18px); right: calc(-50% + 18px);

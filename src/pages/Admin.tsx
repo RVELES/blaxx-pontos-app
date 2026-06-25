@@ -300,7 +300,7 @@ export default function Admin() {
                         type="checkbox"
                         checked={!!u.is_vip}
                         onChange={(e) => toggleVip(u, e.target.checked)}
-                        style={{ width: 18, height: 18, cursor: 'pointer', accentColor: '#7CFF00' }}
+                        style={{ width: 18, height: 18, cursor: 'pointer', accentColor: '#59FD27' }}
                       />
                     </td>
                   </tr>

@@ -82,14 +82,14 @@ const css = `
   display: flex; flex-direction: column; justify-content: space-between;
   padding: 40px 48px; color: var(--blaxx-white);
   background:
-    radial-gradient(120% 90% at 100% 0%, rgba(124,255,0,.16), transparent 55%),
-    radial-gradient(90% 80% at 0% 100%, rgba(124,255,0,.10), transparent 50%),
+    radial-gradient(120% 90% at 100% 0%, rgba(89,253,39,.16), transparent 55%),
+    radial-gradient(90% 80% at 0% 100%, rgba(89,253,39,.10), transparent 50%),
     var(--blaxx-black);
 }
 .auth__brandpane::after {
   content: ''; position: absolute; right: -120px; bottom: -120px;
   width: 360px; height: 360px; border-radius: 50%;
-  border: 1px solid rgba(124,255,0,.18);
+  border: 1px solid rgba(89,253,39,.18);
 }
 .auth__brandtop { display: flex; flex-direction: column; gap: 28px; position: relative; z-index: 1; }
 .auth__logo { height: 30px; width: auto; align-self: flex-start; }
@@ -118,7 +118,7 @@ const css = `
 }
 .auth__hico {
   flex: none; display: grid; place-items: center; width: 30px; height: 30px;
-  border-radius: 9px; background: rgba(124,255,0,.14); color: var(--blaxx-lime);
+  border-radius: 9px; background: rgba(89,253,39,.14); color: var(--blaxx-lime);
   font-size: 15px;
 }
 .auth__brandfoot { position: relative; z-index: 1; font-size: 13px; color: rgba(255,255,255,.6); }

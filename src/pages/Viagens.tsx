@@ -3,7 +3,7 @@
 import { useNavigate } from 'react-router-dom'
 import { Topbar } from '../components/Shell'
 
-const DEMO = { fontSize: 10, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase' as const, color: '#7a9e00', background: 'rgba(124,255,0,.14)', border: '1px solid rgba(124,255,0,.4)', padding: '3px 8px', borderRadius: 999 }
+const DEMO = { fontSize: 10, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase' as const, color: '#7a9e00', background: 'rgba(89,253,39,.14)', border: '1px solid rgba(89,253,39,.4)', padding: '3px 8px', borderRadius: 999 }
 
 const HOTELS = [
   { k: 'M', name: 'Marriott Bonvoy', rt: '8.500+ hotéis · 139 países' },

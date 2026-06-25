@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { BlaxxAPI, Session, CardState, Wallet, Partner } from '../lib/api-client'
 
-const LIME = '#7CFF00'
+const LIME = '#59FD27'
 const FAV_KEY = 'blaxx_fav_partners'
 
 const fmtN = (n: number) => Number(n || 0).toLocaleString('pt-BR')
@@ -348,17 +348,17 @@ const CSS = `
 .pz-banner-wrap{position:relative;margin-bottom:24px}
 .pz-banner{height:180px;border-radius:24px;overflow:hidden;display:flex;align-items:center;
   justify-content:space-between;padding:0 40px;cursor:pointer;
-  background:radial-gradient(120% 160% at 100% 0%,rgba(124,255,0,.22),transparent 55%),
+  background:radial-gradient(120% 160% at 100% 0%,rgba(89,253,39,.22),transparent 55%),
     linear-gradient(110deg,#050505 40%,#101206);transition:transform .25s}
 .pz-banner:hover{transform:translateY(-2px)}
 .pz-banner-copy{max-width:62%}
 .pz-banner-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--lime);background:rgba(124,255,0,.12);padding:5px 12px;border-radius:99px}
+  color:var(--lime);background:rgba(89,253,39,.12);padding:5px 12px;border-radius:99px}
 .pz-banner-name{color:#fff;font-size:30px;font-weight:700;letter-spacing:-.02em;margin:12px 0 4px}
 .pz-banner-rule{color:#C9CDD2;font-size:14px;margin:0 0 14px}
 .pz-banner-btn{display:inline-block;background:var(--lime);color:#0a0a0a;font-weight:700;font-size:13.5px;
   padding:11px 20px;border-radius:99px;transition:.2s}
-.pz-banner:hover .pz-banner-btn{box-shadow:0 8px 24px rgba(124,255,0,.32)}
+.pz-banner:hover .pz-banner-btn{box-shadow:0 8px 24px rgba(89,253,39,.32)}
 .pz-banner-logo{font-size:96px;line-height:1;filter:drop-shadow(0 12px 28px rgba(0,0,0,.4))}
 .pz-arrow{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;
   background:rgba(255,255,255,.14);color:#fff;font-size:22px;display:grid;place-items:center;backdrop-filter:blur(6px)}
@@ -403,7 +403,7 @@ const CSS = `
 .pz-pname{font-weight:700;font-size:15px;letter-spacing:-.01em}
 .pz-pcat{font-size:12px;color:#9aa0a6;margin-top:2px}
 .pz-prate{margin-top:10px;font-size:11.5px;font-weight:700;letter-spacing:.02em;color:#5f7a10;
-  background:rgba(124,255,0,.18);padding:5px 11px;border-radius:99px}
+  background:rgba(89,253,39,.18);padding:5px 11px;border-radius:99px}
 .pz-buy{margin-top:14px;width:100%;padding:11px;border-radius:13px;background:var(--blk);color:#fff;
   font-weight:600;font-size:13.5px;transition:.2s}
 .pz-buy:hover{background:#000;box-shadow:0 8px 22px rgba(5,5,5,.22)}

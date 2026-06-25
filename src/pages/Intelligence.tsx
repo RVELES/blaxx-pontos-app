@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { Topbar } from '../components/Shell'
 import { BlaxxAPI, fmtBRL, fmtNumber, type CardState, type Wallet } from '../lib/api-client'
 
-const DEMO = { fontSize: 10, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase' as const, color: '#7a9e00', background: 'rgba(124,255,0,.14)', border: '1px solid rgba(124,255,0,.4)', padding: '3px 8px', borderRadius: 999 }
+const DEMO = { fontSize: 10, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase' as const, color: '#7a9e00', background: 'rgba(89,253,39,.14)', border: '1px solid rgba(89,253,39,.4)', padding: '3px 8px', borderRadius: 999 }
 
 const SIGNALS = [
   { ico: 'S', t: 'Melhor transferência hoje', b: 'SMILES +80%', s: 'Prazo: 48 horas' },
@@ -34,7 +34,7 @@ export default function Intelligence() {
         {wallet ? (
           <>
             <h2 style={{ fontSize: 30, margin: '10px 0 6px' }}>
-              {fmtNumber(wallet.balance_pts)} pts ≈ <span style={{ color: '#7CFF00' }}>{fmtBRL(wallet.balance_brl_equiv)}</span>
+              {fmtNumber(wallet.balance_pts)} pts ≈ <span style={{ color: '#59FD27' }}>{fmtBRL(wallet.balance_brl_equiv)}</span>
             </h2>
             <p style={{ color: 'rgba(255,255,255,.7)', maxWidth: 560 }}>
               {card?.next_tier

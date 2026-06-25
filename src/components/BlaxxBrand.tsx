@@ -2,8 +2,8 @@
 // "Bla" acompanha a superfície (claro/escuro); "Xx" sempre no verde neon da marca.
 import { useId } from 'react'
 
-const NEON = '#7CFF00'        // verde mais neon da paleta (Secondary)
-const NEON_DARK = '#5AB800'   // companheiro legível sobre fundo claro
+const NEON = '#59FD27'        // verde mais neon da paleta (Secondary)
+const NEON_DARK = '#3ab819'   // companheiro legível sobre fundo claro
 
 export function BlaxxMark({ size = 28, color }: { size?: number; color?: string }) {
   const id = useId()

@@ -378,11 +378,15 @@ function WhatsAppFab() {
 
 // ─── Navegação mobile: bottom tab bar + sheet "Mais" ─────────────────────────
 
+// Destinos primários no mobile seguem o design system da área logada
+// (Início · Mapa · Resgatar · Extrato). O 5º item "Mais" abre o sheet com a
+// navegação completa (Perfil, Carteira, Cartão etc.) — Perfil também fica no
+// avatar do header. Não cabem 16 rotas em 5 abas; o sheet preserva o acesso.
 const TAB_ITEMS: { to: string; iconKey: keyof typeof ICONS; label: string }[] = [
-  { to: '/dashboard', iconKey: 'home',       label: 'Início' },
-  { to: '/carteira',  iconKey: 'wallet',     label: 'Carteira' },
-  { to: '/cartao',    iconKey: 'creditCard', label: 'Cartão' },
-  { to: '/parceiros', iconKey: 'building',   label: 'Mercado' },
+  { to: '/dashboard', iconKey: 'home',     label: 'Início' },
+  { to: '/parceiros', iconKey: 'globe',    label: 'Mapa' },
+  { to: '/resgates',  iconKey: 'gift',     label: 'Resgatar' },
+  { to: '/extrato',   iconKey: 'chartBar', label: 'Extrato' },
 ]
 
 /**

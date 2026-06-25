@@ -7,8 +7,8 @@
   /* Paleta de cores oficial */
   --blaxx-black:          #0A0A0A;
   --blaxx-black-soft:     #1A1A1A;
-  --blaxx-lime:           #7CFF00;
-  --blaxx-lime-dark:      #5AB800;
+  --blaxx-lime:           #59FD27;
+  --blaxx-lime-dark:      #3ab819;
   --blaxx-lime-light:     #F0FAD9;
   --blaxx-white:          #FFFFFF;
   --gray-50:              #FAFAFA;
@@ -38,12 +38,12 @@
   --sidebar-border:       rgba(255,255,255,.07);
   --sidebar-item:         #8B9199;
   --sidebar-item-hover:   rgba(255,255,255,.06);
-  --sidebar-active-bg:    #7CFF00;
+  --sidebar-active-bg:    #59FD27;
   --sidebar-active-text:  #0A0A0A;
 
   /* Tipografia */
   --font-display: 'Playfair Display', 'New York', Georgia, 'Times New Roman', serif;
-  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+  --font-body:    'Sora', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
   --font-mono:    'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
 
   /* Raios e sombras */
@@ -242,7 +242,7 @@ h3, .display-3 { font-size: 22px; line-height: 1.25; }
 }
 .search-bar:focus-within {
   border-color: var(--blaxx-lime-dark);
-  box-shadow: 0 0 0 3px rgba(124,255,0,.15);
+  box-shadow: 0 0 0 3px rgba(89,253,39,.15);
 }
 .search-icon { color: var(--text-muted); display: inline-flex; align-items: center; flex-shrink: 0; }
 .search-input {
@@ -440,7 +440,7 @@ h3, .display-3 { font-size: 22px; line-height: 1.25; }
   background: rgba(22,163,74,.12);
   color: var(--positive);
 }
-.growth-pill.on-dark { background: rgba(124,255,0,.16); color: var(--blaxx-lime); }
+.growth-pill.on-dark { background: rgba(89,253,39,.16); color: var(--blaxx-lime); }
 .growth-pill.negative { background: rgba(220,38,38,.12); color: var(--negative); }
 
 /* barras de distribuição da carteira */
@@ -586,7 +586,7 @@ h3, .display-3 { font-size: 22px; line-height: 1.25; }
 .field input:focus, .field select:focus, .field textarea:focus {
   outline: none;
   border-color: var(--blaxx-black);
-  box-shadow: 0 0 0 3px rgba(124,255,0,0.35);
+  box-shadow: 0 0 0 3px rgba(89,253,39,0.35);
 }
 /* checkbox/radio nunca herdam o appearance:none dos inputs de texto */
 .field input[type="checkbox"], .field input[type="radio"],
@@ -758,23 +758,23 @@ table.blaxx tbody tr:last-child td { border-bottom: 0; }
    ficam FORA do shell e permanecem claras. Vem por último p/ vencer por ordem.
    ======================================================================= */
 .app-shell {
-  /* superfícies e texto */
-  --bg:             #050505;
-  --bg-elevated:    #0E131B;
-  --surface:        #0A0D12;
-  --surface-hover:  #121722;
-  --border:         rgba(255,255,255,.08);
-  --border-strong:  rgba(255,255,255,.15);
+  /* Neon Refinada — superfícies chapadas quase-pretas (mesma linguagem da landing) */
+  --bg:             #0a0a0a;
+  --bg-elevated:    #101010;   /* --panel-2: superfície sobre superfície */
+  --surface:        #0d0d0d;   /* --panel: cards e superfícies */
+  --surface-hover:  #161616;
+  --border:         #1c1c1c;   /* --line: divisores e bordas padrão */
+  --border-strong:  #2a2a2a;
   --text:           #FFFFFF;
-  --text-secondary: #9CA3AF;
-  --text-muted:     #6B7280;
-  /* acentos premium */
-  --blaxx-lime:      #7CFF00;
-  --blaxx-lime-dark: #5AB800;
-  --accent:          #7CFF00;
-  --accent-2:        #7CFF00;
-  --positive:        #00FF88;
-  --negative:        #FF4D4D;
+  --text-secondary: #b7bbb2;   /* --muted: texto de apoio */
+  --text-muted:     #8a8f86;   /* --muted-2: legendas / labels / datas */
+  /* acentos — verde neon de marca */
+  --blaxx-lime:      #59FD27;
+  --blaxx-lime-dark: #3ab819;
+  --accent:          #59FD27;
+  --accent-2:        #59FD27;
+  --positive:        #59FD27;   /* --pos: entrada de pontos (+) */
+  --negative:        #FF5247;   /* erros/badges — NUNCA em deltas de saída */
   --gold:            #FFD700;
   --silver:          #C0C0C0;
   /* auxiliares translúcidos */
@@ -785,7 +785,7 @@ table.blaxx tbody tr:last-child td { border-bottom: 0; }
   --shadow-sm: 0 1px 2px rgba(0,0,0,.5);
   --shadow:    0 12px 32px rgba(0,0,0,.55), 0 2px 8px rgba(0,0,0,.4);
   --shadow-lg: 0 28px 60px rgba(0,0,0,.65), 0 8px 20px rgba(0,0,0,.5);
-  --glow-lime: 0 0 0 1px rgba(124,255,0,.22), 0 10px 44px rgba(124,255,0,.16);
+  --glow-lime: 0 0 0 1px rgba(89,253,39,.22), 0 10px 44px rgba(89,253,39,.16);
   --sidebar-bg: #070809;
   color: var(--text);
   background: var(--bg);
@@ -822,6 +822,13 @@ table.blaxx tbody tr:last-child td { border-bottom: 0; }
 .app-shell .chip { background: var(--gray-100); color: var(--text-secondary); }
 .app-shell .copy-box { background: var(--gray-50); }
 
+/* deltas de valor (Neon Refinada): entrada em verde neon, saída em CINZA —
+   nunca vermelho para saídas de pontos (regra rígida do design system). */
+.app-shell .amount-pos { color: var(--accent); }
+.app-shell .amount-neg { color: var(--text-secondary); }
+.app-shell .chip.success { background: #59FD2733; color: var(--accent); }
+.app-shell .chip.danger  { background: rgba(255,255,255,.06); color: var(--text-secondary); }
+
 /* ── Layout: sidebar fixa + conteúdo rolável + header glass ───────── */
 .app-shell .sidebar {
   position: sticky; top: 0; height: 100vh; align-self: start;
@@ -850,8 +857,8 @@ table.blaxx tbody tr:last-child td { border-bottom: 0; }
 .app-shell .sidebar .nav-item.active .icon { color: var(--blaxx-lime); }
 .nav-active-pill {
   position: absolute; inset: 0; border-radius: 12px; z-index: -1;
-  background: linear-gradient(135deg, rgba(124,255,0,.17), rgba(124,255,0,.05));
-  border: 1px solid rgba(124,255,0,.32);
+  background: linear-gradient(135deg, rgba(89,253,39,.17), rgba(89,253,39,.05));
+  border: 1px solid rgba(89,253,39,.32);
 }
 .app-shell .sidebar-footer { color: rgba(255,255,255,.25); }
 
@@ -875,8 +882,8 @@ table.blaxx tbody tr:last-child td { border-bottom: 0; }
   transition: border-color .2s, box-shadow .2s, background .2s;
 }
 .bx-search:focus-within {
-  border-color: rgba(124,255,0,.45);
-  box-shadow: 0 0 0 4px rgba(124,255,0,.1);
+  border-color: rgba(89,253,39,.45);
+  box-shadow: 0 0 0 4px rgba(89,253,39,.1);
   background: rgba(255,255,255,.07);
 }
 .bx-search input {
@@ -909,11 +916,11 @@ table.blaxx tbody tr:last-child td { border-bottom: 0; }
 .bx-wallet-chip {
   display: flex; align-items: center; gap: 10px;
   height: 42px; padding: 0 15px 0 13px; border-radius: 13px; cursor: pointer;
-  background: linear-gradient(135deg, rgba(124,255,0,.14), rgba(124,255,0,.05));
-  border: 1px solid rgba(124,255,0,.28);
+  background: linear-gradient(135deg, rgba(89,253,39,.14), rgba(89,253,39,.05));
+  border: 1px solid rgba(89,253,39,.28);
   transition: transform .15s, box-shadow .15s;
 }
-.bx-wallet-chip:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(124,255,0,.2); }
+.bx-wallet-chip:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(89,253,39,.2); }
 .bx-wallet-chip .ic { color: var(--blaxx-lime); display: grid; place-items: center; }
 .bx-wallet-chip .v { font-weight: 800; font-size: 14px; color: #fff; letter-spacing: -.01em; line-height: 1; }
 .bx-wallet-chip .v small { display: block; color: var(--text-secondary); font-weight: 600; font-size: 10px; letter-spacing: .02em; margin-top: 2px; }
@@ -927,7 +934,7 @@ table.blaxx tbody tr:last-child td { border-bottom: 0; }
 .bx-avatar {
   width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
   font-weight: 800; font-size: 13px;
-  background: linear-gradient(135deg, #7CFF00, #7CFF00); color: #08130a;
+  background: linear-gradient(135deg, #59FD27, #59FD27); color: #08130a;
 }
 .bx-profile .nm { display: flex; flex-direction: column; line-height: 1.15; }
 .bx-profile .nm b { font-size: 13px; color: #fff; font-weight: 700; }
@@ -968,7 +975,7 @@ table.blaxx tbody tr:last-child td { border-bottom: 0; }
 .bx-tab.active::before {
   content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
   width: 26px; height: 3px; border-radius: 0 0 4px 4px;
-  background: var(--blaxx-lime); box-shadow: 0 0 10px rgba(124,255,0,.6);
+  background: var(--blaxx-lime); box-shadow: 0 0 10px rgba(89,253,39,.6);
 }
 
 .bx-sheet-backdrop {
@@ -1020,8 +1027,8 @@ table.blaxx tbody tr:last-child td { border-bottom: 0; }
 .bx-sheet-link:hover, .bx-sheet-link:active { background: rgba(255,255,255,.05); color: #fff; }
 .bx-sheet-link:hover .icon { color: #fff; }
 .bx-sheet-link.active {
-  background: linear-gradient(135deg, rgba(124,255,0,.16), rgba(124,255,0,.05));
-  border-color: rgba(124,255,0,.3); color: var(--blaxx-lime); font-weight: 700;
+  background: linear-gradient(135deg, rgba(89,253,39,.16), rgba(89,253,39,.05));
+  border-color: rgba(89,253,39,.3); color: var(--blaxx-lime); font-weight: 700;
 }
 .bx-sheet-link.active .icon { color: var(--blaxx-lime); }
 .bx-sheet-link.logout { color: var(--negative); margin-top: 10px; }

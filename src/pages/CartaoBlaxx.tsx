@@ -179,9 +179,9 @@ export default function CartaoBlaxx() {
                       padding: '10px 12px',
                       borderRadius: 12,
                       border: active
-                        ? '1px solid var(--lime, #7CFF00)'
+                        ? '1px solid var(--lime, #59FD27)'
                         : '1px solid rgba(255,255,255,.08)',
-                      background: active ? 'rgba(124,255,0,.06)' : 'transparent',
+                      background: active ? 'rgba(89,253,39,.06)' : 'transparent',
                     }}
                   >
                     <span

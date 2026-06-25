@@ -90,7 +90,7 @@ export default function CentralNotificacoes() {
                   padding: '14px 0',
                   borderBottom: '1px solid var(--border)',
                   cursor: 'pointer',
-                  ...(n.is_read ? {} : { background: 'rgba(124,255,0,0.06)' }),
+                  ...(n.is_read ? {} : { background: 'rgba(89,253,39,0.06)' }),
                 }}
                 onClick={() => markRead(n.id)}
               >
