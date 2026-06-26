@@ -249,12 +249,11 @@ export function apiBase(): string {
 // ---------- Session ----------
 const SESSION_KEY = 'blaxx_session'
 
-// SEC-1: o token JWT agora vive em cookie httpOnly `blaxx_session` (setado
-// pelo backend, invisível pro JS). localStorage guarda APENAS metadados do
-// usuário (nome, email, tier) pra UX rápida em renders iniciais. O
-// `isLoggedIn()` agora confia na presença do `user` no storage — se o
-// cookie estiver expirado/revogado, o /auth/me devolve 401 e o handler
-// global limpa tudo.
+// AUTH: o token JWT do /auth/login é guardado em localStorage e enviado como
+// `Authorization: Bearer` em cada request (ver api()). O backend é cross-origin
+// e não habilita cookies credenciados (Access-Control-Allow-Credentials), então
+// Bearer é o mecanismo que funciona. Se o token expirar/for revogado, o /auth/me
+// devolve 401 e o handler global (setUnauthorizedHandler) limpa a sessão.
 export const Session = {
   get(): SessionData | null {
     try {
@@ -265,25 +264,20 @@ export const Session = {
     }
   },
   set(data: SessionData) {
-    // Strip do token antes de salvar — o backend já setou cookie httpOnly.
-    // (Defesa em profundidade: se algum caller passar token, a gente ignora
-    //  pra evitar regredir pra XSS-exfilable.)
-    const safe: SessionData = { ...data, token: '' }
-    localStorage.setItem(SESSION_KEY, JSON.stringify(safe))
+    localStorage.setItem(SESSION_KEY, JSON.stringify(data))
   },
   clear() {
     localStorage.removeItem(SESSION_KEY)
   },
-  /** @deprecated SEC-1: cookie httpOnly cuida do auth. Retorna sempre null. */
   token(): string | null {
-    return null
+    return this.get()?.token ?? null
   },
   user(): User | null {
     return this.get()?.user ?? null
   },
-  /** True se há `user` no storage. O cookie cuida da autenticação real. */
+  /** True se há token JWT no storage (enviado como Bearer nas requests). */
   isLoggedIn(): boolean {
-    return !!this.user()
+    return !!this.token()
   },
   /** Atualiza apenas o usuário mantendo o resto (ex.: após /auth/me). */
   setUser(user: User) {
@@ -332,14 +326,15 @@ export async function api<T = unknown>(path: string, opts: ApiOptions = {}): Pro
   if (opts.body !== undefined && !(opts.body instanceof FormData)) {
     headers.set('Content-Type', 'application/json')
   }
-  // SEC-1: `credentials: 'include'` faz o navegador enviar o cookie httpOnly
-  // `blaxx_session` que o backend setou no /auth/login. Sem isso, o cookie
-  // é IGNORADO em requests cross-origin (Netlify SPA → Render backend).
-  // Em paralelo, mantemos o header `Authorization` por compat caso o caller
-  // passe via opts.headers (apps embarcados / testes).
+  // AUTH: token JWT no header Authorization (Bearer). O backend em
+  // blaxx-pontos-exe.onrender.com é cross-origin e NÃO retorna
+  // `Access-Control-Allow-Credentials: true`, então cookie httpOnly via
+  // `credentials: 'include'` é bloqueado pelo navegador (quebra o login).
+  // Bearer-token funciona cross-origin sem precisar de cookie.
+  const token = Session.token()
+  if (token) headers.set('Authorization', `Bearer ${token}`)
   const res = await fetch(apiBase() + path, {
     ...opts,
-    credentials: 'include',
     headers,
     body:
       opts.body === undefined
@@ -554,10 +549,9 @@ export const BlaxxAPI = {
  * a UI usa isso para mostrar "em breve". É binário, então não passa pelo api().
  */
 export async function downloadCardPass(): Promise<void> {
-  // SEC-1: cookie httpOnly cuida do auth (credentials: 'include').
-  // Session.token() agora retorna null — mantido só por compat de tipos.
+  const token = Session.token()
   const res = await fetch(apiBase() + '/card/pass', {
-    credentials: 'include',
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
   })
   if (!res.ok) {
     let data: unknown = {}
