@@ -9,6 +9,8 @@ export default function PagamentoPix() {
   const [charge, setCharge] = useState<PixCharge | null>(null)
   const [exp, setExp] = useState('30 min')
   const [simulating, setSimulating] = useState(false)
+  // Só exibe "Simular pagamento" quando o provider é mock (homologação).
+  const [isMock, setIsMock] = useState(false)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
@@ -40,6 +42,15 @@ export default function PagamentoPix() {
       if (timerRef.current) clearTimeout(timerRef.current)
     }
   }, [navigate])
+
+  // Descobre o provider ativo uma vez (para exibir ou não o botão de simular).
+  useEffect(() => {
+    let alive = true
+    BlaxxAPI.pixProvider()
+      .then((p) => { if (alive) setIsMock(!!p?.is_mock) })
+      .catch(() => { /* na dúvida, esconde o botão (assume produção) */ })
+    return () => { alive = false }
+  }, [])
 
   // Polling de status: quando o pagamento é confirmado (webhook do provedor
   // OU confirmação manual do admin), a tela avança sozinha para a aprovação —
@@ -133,15 +144,26 @@ export default function PagamentoPix() {
             <span>Expira em</span>
             <strong>{exp}</strong>
           </div>
-          <button className="btn primary block mt-6" onClick={simulate} disabled={simulating}>
-            {simulating ? 'Confirmando…' : 'Simular pagamento (demo)'}
-          </button>
-          <p
-            className="muted center-text mt-2"
-            style={{ fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase' }}
-          >
-            Em produção: webhook do gateway credita automaticamente
-          </p>
+          {isMock ? (
+            <>
+              <button className="btn primary block mt-6" onClick={simulate} disabled={simulating}>
+                {simulating ? 'Confirmando…' : 'Simular pagamento (demo)'}
+              </button>
+              <p
+                className="muted center-text mt-2"
+                style={{ fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase' }}
+              >
+                Homologação: botão de simulação disponível apenas no mock
+              </p>
+            </>
+          ) : (
+            <p
+              className="muted center-text mt-6"
+              style={{ fontSize: 12 }}
+            >
+              Assim que o banco confirmar o PIX, os pontos entram automaticamente.
+            </p>
+          )}
         </div>
       </div>
     </>

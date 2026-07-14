@@ -466,6 +466,9 @@ export const BlaxxAPI = {
   pixCharge: (payload: Record<string, unknown>) =>
     api<PixCharge>('/pix/charge', { method: 'POST', body: payload }),
   pixChargeStatus: (id: string) => api<PixCharge>(`/pix/charge/${encodeURIComponent(id)}`),
+  // Identifica o provider ativo — o botão "Simular pagamento" só faz sentido
+  // no mock; em produção (mercadopago) o backend responde 403.
+  pixProvider: () => api<{ name: string; is_mock: boolean }>('/pix/provider'),
   pixSimulatePayment: (id: string) =>
     api('/pix/simulate-payment', { method: 'POST', body: { charge_id: id } }),
   // PIX valor livre (fluxo manual com confirmação admin)

@@ -84,8 +84,8 @@ export default function Status() {
       state: error ? 'down' : 'operational',
     },
     {
-      name: 'Pagamentos PIX',
-      description: 'Compra e resgate em homologação (provider MOCK).',
+      name: 'Pagamentos',
+      description: 'Compra de pontos (PIX e cartão) e resgate via PIX.',
       state: error ? 'down' : 'operational',
     },
     {
