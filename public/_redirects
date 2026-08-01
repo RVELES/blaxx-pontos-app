@@ -1,1 +1,11 @@
+# URLs limpos para páginas legais (sem .html)
+/privacidade           /privacidade.html   200
+/privacidade/          /privacidade.html   200
+/termos                /termos.html        200
+/termos/               /termos.html        200
+/politica-privacidade  /privacidade.html   301
+/termos-de-uso         /termos.html        301
+
+# SPA fallback para o app React (mantém react-router funcionando após refresh).
+# IMPORTANTE: precisa ser a ÚLTIMA regra — captura tudo que não foi atendido acima.
 /*    /index.html   200

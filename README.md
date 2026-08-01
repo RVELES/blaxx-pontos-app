@@ -12,6 +12,8 @@ ergonomico, testavel, com hot reload e bundle otimizado.
 - Roteamento react-router-dom
 - `api()` helper igual ao do `blaxx-app.js` mas com types
 - Tailwind config com palette Blaxx (#080907, #7CFF00, #F6F8F2)
+  > ⚠️ Verde de marca oficial agora é **neon `#59FD27`** (adotado 27/06/2026).
+  > O `#7CFF00` aqui é lime legado — migrar `tailwind.config.js`/CSS vars.
 - Vendor chunk separado (cache-friendly)
 
 ## Run

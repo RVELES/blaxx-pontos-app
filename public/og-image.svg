@@ -13,8 +13,8 @@
       <stop offset="100%" stop-color="#1A1A1A"/>
     </linearGradient>
     <radialGradient id="glow" cx="80%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#C6FF00" stop-opacity="0.18"/>
-      <stop offset="100%" stop-color="#C6FF00" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#59FD27" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#59FD27" stop-opacity="0"/>
     </radialGradient>
   </defs>
   <rect width="1200" height="630" fill="url(#bg)"/>
@@ -23,7 +23,7 @@
   <!-- Logo: B-mark + wordmark "BlaXx" -->
   <g transform="translate(72, 252)">
     <!-- B-mark lime square -->
-    <rect width="96" height="96" rx="20" fill="#C6FF00"/>
+    <rect width="96" height="96" rx="20" fill="#59FD27"/>
     <text x="48" y="68" font-family="'Space Grotesk', system-ui, sans-serif"
           font-size="64" font-weight="800" fill="#0A0A0A"
           text-anchor="middle">B</text>
@@ -34,7 +34,7 @@
     <text font-family="'Space Grotesk', system-ui, sans-serif"
           font-size="68" font-weight="800" letter-spacing="-2"
           fill="#FFFFFF">
-      <tspan>Bla</tspan><tspan fill="#C6FF00">X</tspan><tspan fill="#C6FF00">x</tspan>
+      <tspan>Bla</tspan><tspan fill="#59FD27">X</tspan><tspan fill="#59FD27">x</tspan>
       <tspan dx="14" font-weight="500" fill="#A8A8A8" font-size="56">Rewards</tspan>
     </text>
     <text y="68" font-family="'Space Grotesk', system-ui, sans-serif"
@@ -42,7 +42,7 @@
       pontos viram Pix · cashback premium do Brasil
     </text>
     <text y="118" font-family="'Space Grotesk', system-ui, sans-serif"
-          font-size="22" font-weight="600" fill="#C6FF00"
+          font-size="22" font-weight="600" fill="#59FD27"
           letter-spacing="1">
       blaxxpontos.com.br
     </text>
@@ -50,28 +50,28 @@
 
   <!-- Globo lime decorativo (canto direito) -->
   <g transform="translate(960, 315)" opacity="0.85">
-    <circle r="180" fill="none" stroke="#C6FF00" stroke-width="2" opacity="0.4"/>
+    <circle r="180" fill="none" stroke="#59FD27" stroke-width="2" opacity="0.4"/>
     <circle r="180" fill="#0A0A0A"/>
     <!-- Meridianos sutis -->
-    <ellipse cx="0" cy="0" rx="120" ry="180" fill="none" stroke="#C6FF00" stroke-width="1" opacity="0.25"/>
-    <ellipse cx="0" cy="0" rx="60" ry="180" fill="none" stroke="#C6FF00" stroke-width="1" opacity="0.18"/>
-    <line x1="-180" y1="0" x2="180" y2="0" stroke="#C6FF00" stroke-width="1" opacity="0.22"/>
-    <line x1="-180" y1="-60" x2="180" y2="-60" stroke="#C6FF00" stroke-width="1" opacity="0.12"/>
-    <line x1="-180" y1="60" x2="180" y2="60" stroke="#C6FF00" stroke-width="1" opacity="0.12"/>
+    <ellipse cx="0" cy="0" rx="120" ry="180" fill="none" stroke="#59FD27" stroke-width="1" opacity="0.25"/>
+    <ellipse cx="0" cy="0" rx="60" ry="180" fill="none" stroke="#59FD27" stroke-width="1" opacity="0.18"/>
+    <line x1="-180" y1="0" x2="180" y2="0" stroke="#59FD27" stroke-width="1" opacity="0.22"/>
+    <line x1="-180" y1="-60" x2="180" y2="-60" stroke="#59FD27" stroke-width="1" opacity="0.12"/>
+    <line x1="-180" y1="60" x2="180" y2="60" stroke="#59FD27" stroke-width="1" opacity="0.12"/>
     <!-- 5 destinos brilhando como pontos lime -->
-    <circle cx="-70" cy="-50" r="6" fill="#C6FF00"/>
-    <circle cx="80" cy="-20" r="6" fill="#C6FF00"/>
-    <circle cx="40" cy="70" r="6" fill="#C6FF00"/>
-    <circle cx="-90" cy="40" r="6" fill="#C6FF00"/>
-    <circle cx="120" cy="80" r="6" fill="#C6FF00"/>
+    <circle cx="-70" cy="-50" r="6" fill="#59FD27"/>
+    <circle cx="80" cy="-20" r="6" fill="#59FD27"/>
+    <circle cx="40" cy="70" r="6" fill="#59FD27"/>
+    <circle cx="-90" cy="40" r="6" fill="#59FD27"/>
+    <circle cx="120" cy="80" r="6" fill="#59FD27"/>
   </g>
 
   <!-- Selo "sem mensalidade" no rodapé direito -->
   <g transform="translate(870, 560)">
-    <rect width="270" height="48" rx="24" fill="rgba(198,255,0,0.14)"
-          stroke="#C6FF00" stroke-width="1.5"/>
+    <rect width="270" height="48" rx="24" fill="rgba(89,253,39,0.14)"
+          stroke="#59FD27" stroke-width="1.5"/>
     <text x="135" y="32" font-family="'Space Grotesk', system-ui, sans-serif"
-          font-size="20" font-weight="700" fill="#C6FF00"
+          font-size="20" font-weight="700" fill="#59FD27"
           text-anchor="middle">SEM MENSALIDADE</text>
   </g>
 </svg>

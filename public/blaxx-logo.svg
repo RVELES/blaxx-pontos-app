@@ -9,6 +9,6 @@
       <polygon points="16.33,28.04 19.66,28.04 26.1,35.08 21.93,35.08" fill="#000"/>
     </mask>
   </defs>
-  <rect x="10.0" y="10.0" width="37.88" height="44.0" fill="#C6FF00" mask="url(#blg)"/>
-  <text x="60.88" y="43.5" font-family="'Space Grotesk','Sora','Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="37" font-weight="700" letter-spacing="-1.4"><tspan fill="#FFFFFF">Bla</tspan><tspan fill="#C6FF00">Xx</tspan></text>
+  <rect x="10.0" y="10.0" width="37.88" height="44.0" fill="#59FD27" mask="url(#blg)"/>
+  <text x="60.88" y="43.5" font-family="'Space Grotesk','Sora','Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="37" font-weight="700" letter-spacing="-1.4"><tspan fill="#FFFFFF">Bla</tspan><tspan fill="#59FD27">Xx</tspan></text>
 </svg>

@@ -10,5 +10,5 @@
     </mask>
   </defs>
   <rect width="100" height="100" rx="22.0" ry="22.0" fill="#000000"/>
-  <rect width="100" height="100" fill="#C6FF00" mask="url(#bt)"/>
+  <rect width="100" height="100" fill="#59FD27" mask="url(#bt)"/>
 </svg>

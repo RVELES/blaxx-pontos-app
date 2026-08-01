@@ -495,12 +495,12 @@ function MobileNav() {
 export default function Shell() {
   const [meta, setMeta] = useState<PageMeta>({ eyebrow: '', title: '' })
 
-  // Pinta o <body> de escuro enquanto o shell logado está montado, para que a
+  // Pinta o <body> de papel enquanto o shell logado está montado, para que a
   // área de overscroll (rubber-band) e páginas mais curtas que a viewport não
-  // revelem o fundo claro. Reverte ao sair (páginas públicas).
+  // revelem outro fundo. Reverte ao sair (páginas públicas).
   useEffect(() => {
     const prev = document.body.style.background
-    document.body.style.background = '#050505'
+    document.body.style.background = '#E8E6DD'
     return () => {
       document.body.style.background = prev
     }

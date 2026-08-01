@@ -5,7 +5,8 @@
 //   /blaxx_principal_preto.svg   → lockup vertical completo em preto, fundos claros
 // O wordmark horizontal (chrome do app) usa o símbolo oficial + texto "BlaXx"
 // ("Bla" acompanha a superfície; "Xx" no verde neon da marca).
-const NEON = '#59FD27' // Verde oficial (#59FD27)
+const NEON = '#59FD27' // Verde oficial (#59FD27) — "Xx" sobre fundo escuro
+const XX_ON_LIGHT = '#5AB800' // lime dark — "Xx" sobre fundo claro (regra do wordmark)
 const MARK_RATIO = 451 / 520 // proporção do símbolo oficial (blaxx_simbolo_color.svg)
 
 export function BlaxxMark({ size = 28, className = '' }: { size?: number; className?: string }) {
@@ -55,7 +56,7 @@ export function BlaxxBrand({
             color: baseText,
           }}
         >
-          Bla<span style={{ color: NEON }}>Xx</span>
+          Bla<span style={{ color: onDark ? NEON : XX_ON_LIGHT }}>Xx</span>
         </span>
       )}
     </span>
