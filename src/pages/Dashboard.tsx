@@ -1,14 +1,12 @@
 // Dashboard premium — "BlaXx Command Center".
 // Patrimônio (REAL: /wallet), nível/progresso (REAL: /card), parceiros
 // (REAL: /partners), campanhas (REAL: /campaigns), movimentações (REAL).
-// Módulos sem fonte de dados (Exchange, Score, Oportunidade, Intelligence) são
-// SHOWCASE: os números são fictícios de homologação, nunca reais.
-// ⚠️ O selo "demo" que os identificava foi REMOVIDO a pedido do dono do produto.
-// Os dados inventados continuam na tela, agora SEM rótulo que os distinga dos
-// dados reais (/wallet, /card, /partners, /campaigns). Antes de qualquer
-// público, esses módulos precisam ser escondidos ou ligados a dados de verdade.
-// O gráfico temporal foi REMOVIDO: a curva vinha de genSeries() e aparecia
-// como se fosse a evolução do patrimônio do cliente.
+// Todos os módulos desta tela consomem dados REAIS. Os que não tinham fonte
+// foram removidos (gráfico gerado por genSeries, Exchange, Wealth Score,
+// Intelligence Center) ou religados: a Oportunidade agora mostra a campanha
+// ativa de maior recompensa e some quando não há campanha.
+// Regra: nada de número inventado nesta tela — os selos "demo" que antes os
+// identificavam foram retirados, então o dado precisa ser verdadeiro.
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, type Variants } from 'framer-motion'
@@ -21,7 +19,6 @@ import {
   BlaxxAPI,
   Session,
   asTxArray,
-  fmtBRL,
   fmtNumber,
   type Campaign,
   type CardState,
@@ -75,23 +72,6 @@ const reveal: Variants = {
     y: 0,
     transition: { duration: 0.5, delay: i * 0.05, ease: EASE },
   }),
-}
-
-// ─── countdown (oportunidade) ────────────────────────────────────────────────
-
-function useCountdown(target: number) {
-  const [now, setNow] = useState(() => Date.now())
-  useEffect(() => {
-    const id = setInterval(() => setNow(Date.now()), 1000)
-    return () => clearInterval(id)
-  }, [])
-  const diff = Math.max(0, target - now)
-  const d = Math.floor(diff / 86400000)
-  const h = Math.floor((diff % 86400000) / 3600000)
-  const m = Math.floor((diff % 3600000) / 60000)
-  const s = Math.floor((diff % 60000) / 1000)
-  const pad = (x: number) => String(x).padStart(2, '0')
-  return { d, h: pad(h), m: pad(m), s: pad(s) }
 }
 
 // ─── Dashboard ───────────────────────────────────────────────────────────────
@@ -156,9 +136,14 @@ export default function Dashboard() {
       .reduce((acc, t) => acc + Number(t.amount_pts), 0)
   }, [txs])
 
-  const cd = useCountdown(useMemo(() => Date.now() + (2 * 86400 + 14 * 3600 + 22 * 60) * 1000, []))
 
-  const topPartner = partners[0]
+  // Campanha ativa de maior recompensa — alimenta o bloco de Oportunidade.
+  const campanhaTop = useMemo(
+    () => campaigns.filter((c) => c && c.name)
+                   .slice()
+                   .sort((a, b) => Number(b.reward_pts || 0) - Number(a.reward_pts || 0))[0],
+    [campaigns],
+  )
 
   return (
     <div className="dx">
@@ -321,22 +306,26 @@ export default function Dashboard() {
       </motion.div>
 
       {/* ============ OPORTUNIDADE EXCLUSIVA ============ */}
+      {campanhaTop && (
       <motion.section className="dx-opp" variants={reveal} initial="hidden" animate="show" custom={2}>
         <div className="dx-opp-glow" />
         <div className="dx-opp-body">
-          <div className="dx-opp-tag"><Svg d={P.bolt} size={14} /> OPORTUNIDADE EXCLUSIVA</div>
-          <h2 className="dx-opp-title">Smiles · Bônus de <span>85%</span></h2>
+          {/* Era "Smiles · Bônus 85% · ROI +38,4% · +122.000 pts" fixo no
+              código — sem fonte de dados e, depois da remoção dos selos "demo",
+              sem nada que o distinguisse do saldo real. Agora vem da campanha
+              ativa de maior recompensa; sem campanha, a seção não renderiza. */}
+          <div className="dx-opp-tag"><Svg d={P.bolt} size={14} /> CAMPANHA EM DESTAQUE</div>
+          <h2 className="dx-opp-title">{campanhaTop.name}</h2>
           <p className="dx-opp-desc">
-            Transfira pontos para a Smiles com bônus turbo. Janela limitada — estimativa de
-            valorização do seu patrimônio em milhas.
+            {campanhaTop.description || 'Participe e ganhe pontos extras.'}
           </p>
-          <div className="dx-opp-metrics">
-            <div><small>ROI estimado</small><b className="up">+38,4%</b></div>
-            <div><small>Potencial de ganho</small><b className="lime">+122.000 pts</b></div>
-            <div><small>Encerra em</small><b className="mono">{cd.d}d {cd.h}:{cd.m}:{cd.s}</b></div>
-          </div>
-          <button className="dx-opp-cta" onClick={() => navigate('/exchange')}>
-            Aproveitar oportunidade <Svg d={P.arrowR} size={18} />
+          {Number(campanhaTop.reward_pts) > 0 && (
+            <div className="dx-opp-metrics">
+              <div><small>Recompensa</small><b className="lime">+{fmtNumber(Number(campanhaTop.reward_pts))} pts</b></div>
+            </div>
+          )}
+          <button className="dx-opp-cta" onClick={() => navigate('/campanhas')}>
+            Ver campanha <Svg d={P.arrowR} size={18} />
           </button>
         </div>
         <div className="dx-opp-coin">
@@ -345,6 +334,7 @@ export default function Dashboard() {
           </div>
         </div>
       </motion.section>
+      )}
 
       {/* ============ GRID PRINCIPAL ============ */}
       <div className="dx-cols">
@@ -405,33 +395,6 @@ export default function Dashboard() {
             </div>
           </motion.section>
 
-          {/* INTELLIGENCE CENTER */}
-          <motion.section className="dx-card dx-intel" variants={reveal} initial="hidden" animate="show" custom={4}>
-            <div className="dx-card-title">
-              <Svg d={P.spark} size={16} /> Intelligence Center
-            </div>
-            <p className="dx-muted dx-intel-sub">Insights automáticos para maximizar seu patrimônio.</p>
-            {[
-              { ic: P.bolt, t: 'Melhor arbitragem', v: 'Livelo → Smiles', s: 'Spread favorável +42%' },
-              { ic: P.send, t: 'Melhor transferência', v: 'Smiles +85%', s: 'Janela: 48 horas' },
-              { ic: P.store, t: 'Melhor cashback', v: 'Magalu · 12%', s: 'Em pontos BlaXx' },
-              { ic: P.shield, t: 'Melhor cartão', v: 'BlaXx Black', s: '4 pts por R$ gasto' },
-              { ic: P.globe, t: 'Melhor parceiro', v: topPartner?.name || 'Latam Travel', s: 'Alta conversão' },
-            ].map((it) => (
-              <div className="dx-insight" key={it.t}>
-                <span className="dx-insight-ic"><Svg d={it.ic} size={16} /></span>
-                <div className="dx-insight-body">
-                  <small>{it.t}</small>
-                  <b>{it.v}</b>
-                </div>
-                <span className="dx-insight-sub">{it.s}</span>
-              </div>
-            ))}
-            <div className="dx-econ">
-              <span>Economia estimada no mês</span>
-              <b className="lime">{fmtBRL(312)}</b>
-            </div>
-          </motion.section>
         </div>
       </div>
 
