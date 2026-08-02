@@ -1,22 +1,17 @@
 // Dashboard premium — "BlaXx Command Center".
 // Patrimônio (REAL: /wallet), nível/progresso (REAL: /card), parceiros
 // (REAL: /partners), campanhas (REAL: /campaigns), movimentações (REAL).
-// Módulos sem fonte de dados (gráfico temporal, Exchange, Score, Oportunidade,
-// Intelligence) são SHOWCASE ilustrativo, marcados "demo" — dados fictícios de
-// homologação, nunca reais.
+// Módulos sem fonte de dados (Exchange, Score, Oportunidade, Intelligence) são
+// SHOWCASE: os números são fictícios de homologação, nunca reais.
+// ⚠️ O selo "demo" que os identificava foi REMOVIDO a pedido do dono do produto.
+// Os dados inventados continuam na tela, agora SEM rótulo que os distinga dos
+// dados reais (/wallet, /card, /partners, /campaigns). Antes de qualquer
+// público, esses módulos precisam ser escondidos ou ligados a dados de verdade.
+// O gráfico temporal foi REMOVIDO: a curva vinha de genSeries() e aparecia
+// como se fosse a evolução do patrimônio do cliente.
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, type Variants } from 'framer-motion'
-import { Line } from 'react-chartjs-2'
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip,
-} from 'chart.js'
 import { Topbar } from '../components/Shell'
 import PointsEquivalence from '../components/PointsEquivalence'
 import BlaxxScore from '../components/BlaxxScore'
@@ -35,8 +30,6 @@ import {
   type Wallet,
 } from '../lib/api-client'
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip)
-
 const LIME = '#59FD27'
 
 // ─── helpers ─────────────────────────────────────────────────────────────────
@@ -46,53 +39,6 @@ function greeting(): string {
   if (h < 12) return 'Bom dia'
   if (h < 18) return 'Boa tarde'
   return 'Boa noite'
-}
-
-/** Série pseudo-aleatória determinística que sobe até `end` (ilustrativa). */
-function genSeries(n: number, end: number, startFactor: number): number[] {
-  const out: number[] = []
-  let v = end * startFactor
-  let s = (n * 9301 + 49297) % 233280
-  const rnd = () => {
-    s = (s * 9301 + 49297) % 233280
-    return s / 233280
-  }
-  for (let i = 0; i < n; i++) {
-    const pull = (end - v) / (n - i)
-    v = Math.max(end * 0.12, v + pull + (rnd() - 0.42) * end * 0.025)
-    out.push(Math.round(v))
-  }
-  out[n - 1] = end
-  return out
-}
-
-function pct(v: number): string {
-  const sign = v >= 0 ? '+' : ''
-  return sign + v.toFixed(1).replace('.', ',') + '%'
-}
-
-const PERIODS = [
-  { k: '7D', n: 7, start: 0.96 },
-  { k: '30D', n: 30, start: 0.84 },
-  { k: '90D', n: 90, start: 0.68 },
-  { k: '1Y', n: 12, start: 0.46 },
-  { k: 'ALL', n: 24, start: 0.26 },
-] as const
-
-// Glow sob a linha do gráfico.
-const glowPlugin = {
-  id: 'limeGlow',
-  beforeDatasetsDraw(chart: ChartJS) {
-    const { ctx } = chart
-    ctx.save()
-    ctx.shadowColor = 'rgba(89,253,39,.45)'
-    ctx.shadowBlur = 18
-    ctx.shadowOffsetX = 0
-    ctx.shadowOffsetY = 7
-  },
-  afterDatasetsDraw(chart: ChartJS) {
-    chart.ctx.restore()
-  },
 }
 
 // ─── ícones inline (premium) ─────────────────────────────────────────────────
@@ -131,93 +77,6 @@ const reveal: Variants = {
   }),
 }
 
-// ─── gráfico de patrimônio (showcase) ────────────────────────────────────────
-
-function PatrimonioChart({ end }: { end: number }) {
-  const [pk, setPk] = useState<(typeof PERIODS)[number]['k']>('30D')
-  const cfg = PERIODS.find((p) => p.k === pk)!
-  const series = useMemo(() => genSeries(cfg.n, end, cfg.start), [cfg, end])
-
-  const data = {
-    labels: series.map((_, i) => String(i + 1)),
-    datasets: [
-      {
-        data: series,
-        borderColor: LIME,
-        borderWidth: 2.5,
-        tension: 0.4,
-        fill: true,
-        pointRadius: 0,
-        pointHoverRadius: 5,
-        pointHoverBackgroundColor: LIME,
-        pointHoverBorderColor: '#0A0D12',
-        pointHoverBorderWidth: 2,
-        backgroundColor: (ctx: { chart: ChartJS }) => {
-          const { ctx: c, chartArea } = ctx.chart
-          if (!chartArea) return 'rgba(89,253,39,.14)'
-          const g = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom)
-          g.addColorStop(0, 'rgba(89,253,39,.34)')
-          g.addColorStop(0.55, 'rgba(89,253,39,.08)')
-          g.addColorStop(1, 'rgba(89,253,39,0)')
-          return g
-        },
-      },
-    ],
-  }
-
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    interaction: { intersect: false, mode: 'index' as const },
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        backgroundColor: 'rgba(10,13,18,.96)',
-        borderColor: 'rgba(89,253,39,.3)',
-        borderWidth: 1,
-        cornerRadius: 12,
-        padding: 12,
-        displayColors: false,
-        titleColor: '#9CA3AF',
-        bodyColor: '#fff',
-        bodyFont: { weight: 700 as const, size: 14 },
-        callbacks: {
-          title: () => '',
-          label: (c: { parsed: { y: number | null } }) => fmtNumber(c.parsed.y ?? 0) + ' pts',
-        },
-      },
-    },
-    scales: {
-      x: { display: false, grid: { display: false } },
-      y: { display: false, grid: { display: false }, beginAtZero: false },
-    },
-  }
-
-  return (
-    <div className="dx-chart-wrap">
-      <div className="dx-chart-head">
-        <div className="dx-chart-title">
-          Evolução do patrimônio <span className="dx-demo">demo</span>
-        </div>
-        <div className="dx-periods">
-          {PERIODS.map((p) => (
-            <button
-              key={p.k}
-              className={'dx-period' + (p.k === pk ? ' on' : '')}
-              onClick={() => setPk(p.k)}
-            >
-              {p.k}
-            </button>
-          ))}
-        </div>
-      </div>
-      <div className="dx-chart">
-        <Line data={data} options={options} plugins={[glowPlugin]} />
-      </div>
-    </div>
-  )
-}
-
 // ─── countdown (oportunidade) ────────────────────────────────────────────────
 
 function useCountdown(target: number) {
@@ -234,17 +93,6 @@ function useCountdown(target: number) {
   const pad = (x: number) => String(x).padStart(2, '0')
   return { d, h: pad(h), m: pad(m), s: pad(s) }
 }
-
-// ─── dados ilustrativos (homologação · fictícios) ────────────────────────────
-
-const EXCHANGE = [
-  { code: 'SM', name: 'Smiles', cls: 'g1', buy: '0,0210', sell: '0,0240', spread: '12,5%', vol: '1,2M', chg: 3.2 },
-  { code: 'LV', name: 'Livelo', cls: 'g2', buy: '0,0340', sell: '0,0370', spread: '8,1%', vol: '2,8M', chg: 1.4 },
-  { code: 'AZ', name: 'TudoAzul', cls: 'g3', buy: '0,0190', sell: '0,0220', spread: '13,6%', vol: '860K', chg: -0.8 },
-  { code: 'LA', name: 'Latam Pass', cls: 'g4', buy: '0,0230', sell: '0,0260', spread: '11,5%', vol: '1,9M', chg: 2.1 },
-  { code: 'TP', name: 'TAP Miles&Go', cls: 'g5', buy: '0,0280', sell: '0,0320', spread: '12,5%', vol: '540K', chg: -1.1 },
-  { code: 'AA', name: 'AAdvantage', cls: 'g6', buy: '0,0410', sell: '0,0460', spread: '10,9%', vol: '430K', chg: 4.6 },
-]
 
 // ─── Dashboard ───────────────────────────────────────────────────────────────
 
@@ -299,13 +147,14 @@ export default function Dashboard() {
   const lifetime = card?.lifetime_points ?? 0
 
   // valor de referência p/ a curva (placeholder enquanto carrega)
-  const chartEnd = balancePts || 16888
-
-  // variação 30 dias (derivada da curva ilustrativa)
-  const var30 = useMemo(() => {
-    const s = genSeries(30, chartEnd, 0.84)
-    return ((s[s.length - 1] - s[0]) / s[0]) * 100
-  }, [chartEnd])
+  // Entradas reais dos últimos 30 dias (extrato), no lugar da variação que
+  // vinha da curva ilustrativa.
+  const entradas30 = useMemo(() => {
+    const corte = Date.now() - 30 * 86400000
+    return txs
+      .filter((t) => Number(t.amount_pts) > 0 && new Date(t.created_at).getTime() >= corte)
+      .reduce((acc, t) => acc + Number(t.amount_pts), 0)
+  }, [txs])
 
   const cd = useCountdown(useMemo(() => Date.now() + (2 * 86400 + 14 * 3600 + 22 * 60) * 1000, []))
 
@@ -328,7 +177,6 @@ export default function Dashboard() {
             <div className="dx-balance">
               {loading ? '—' : fmtNumber(balancePts)} <span>pts</span>
             </div>
-            <div className="dx-equiv">≈ {loading ? 'R$ —' : fmtBRL(balanceBrl)}</div>
             {!loading && balancePts > 0 && (
               <PointsEquivalence
                 balancePts={balancePts}
@@ -336,13 +184,18 @@ export default function Dashboard() {
                 visibleCount={2}
               />
             )}
+            {/* Antes: variação de 30 dias derivada da curva ILUSTRATIVA — um
+                número inventado apresentado como desempenho do cliente. Agora
+                soma as entradas reais do extrato dentro da janela declarada. */}
             <div className="dx-var">
-              <span className={'dx-var-pill ' + (var30 >= 0 ? 'up' : 'down')}>
-                {var30 >= 0 ? '▲' : '▼'} {pct(var30)}
-              </span>
-              <span className="dx-var-cap">últimos 30 dias</span>
+              <span className="dx-var-pill up">▲ {fmtNumber(entradas30)} pts</span>
+              <span className="dx-var-cap">entraram nos últimos 30 dias</span>
             </div>
             <div className="dx-mini-stats">
+              <div>
+                <small>Disponível p/ resgate</small>
+                <b>{fmtNumber(Math.max(0, balancePts - pendingPts))} pts</b>
+              </div>
               <div>
                 <small>Em processamento</small>
                 <b>{fmtNumber(pendingPts)} pts</b>
@@ -407,9 +260,6 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-
-        {/* GRÁFICO */}
-        <PatrimonioChart end={chartEnd} />
       </motion.section>
 
       {/* ============ BLAXX SCORE + CONQUISTAS — saúde de pontos + descoberta ============ */}
@@ -473,7 +323,6 @@ export default function Dashboard() {
       {/* ============ OPORTUNIDADE EXCLUSIVA ============ */}
       <motion.section className="dx-opp" variants={reveal} initial="hidden" animate="show" custom={2}>
         <div className="dx-opp-glow" />
-        <span className="dx-demo abs">demo</span>
         <div className="dx-opp-body">
           <div className="dx-opp-tag"><Svg d={P.bolt} size={14} /> OPORTUNIDADE EXCLUSIVA</div>
           <h2 className="dx-opp-title">Smiles · Bônus de <span>85%</span></h2>
@@ -501,44 +350,6 @@ export default function Dashboard() {
       <div className="dx-cols">
         {/* COLUNA ESQUERDA */}
         <div className="dx-col">
-          {/* EXCHANGE (trading desk) */}
-          <motion.section className="dx-card dx-exch" variants={reveal} initial="hidden" animate="show" custom={3}>
-            <div className="dx-card-head">
-              <div className="dx-card-title">
-                BlaXx Exchange <span className="dx-demo">demo</span>
-              </div>
-              <span className="dx-live"><i /> mercado simulado</span>
-            </div>
-            <div className="dx-exch-scroll">
-              <table className="dx-exch-tbl">
-                <thead>
-                  <tr>
-                    <th>Ativo</th><th>Compra</th><th>Venda</th><th>Spread</th><th>Volume</th><th>24h</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {EXCHANGE.map((e) => (
-                    <tr key={e.code} onClick={() => navigate('/exchange')}>
-                      <td>
-                        <div className="dx-asset">
-                          <span className={'dx-asset-ic ' + e.cls}>{e.code}</span>
-                          <b>{e.name}</b>
-                        </div>
-                      </td>
-                      <td className="mono">{e.buy}</td>
-                      <td className="mono">{e.sell}</td>
-                      <td className="mono dim">{e.spread}</td>
-                      <td className="mono dim">{e.vol}</td>
-                      <td className={'mono ' + (e.chg >= 0 ? 'up' : 'down')}>
-                        {e.chg >= 0 ? '▲' : '▼'} {pct(e.chg)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </motion.section>
-
           {/* MARKETPLACE (App Store style) */}
           <motion.section className="dx-card dx-mkt" variants={reveal} initial="hidden" animate="show" custom={4}>
             <div className="dx-card-head">
@@ -577,7 +388,6 @@ export default function Dashboard() {
         <div className="dx-col">
           {/* SCORE BLAXX */}
           <motion.section className="dx-card dx-score" variants={reveal} initial="hidden" animate="show" custom={3}>
-            <span className="dx-demo abs">demo</span>
             <div className="dx-card-title">Score BlaXx</div>
             <div className="dx-gauge">
               <div className="dx-gauge-ring">
@@ -597,7 +407,6 @@ export default function Dashboard() {
 
           {/* INTELLIGENCE CENTER */}
           <motion.section className="dx-card dx-intel" variants={reveal} initial="hidden" animate="show" custom={4}>
-            <span className="dx-demo abs">demo</span>
             <div className="dx-card-title">
               <Svg d={P.spark} size={16} /> Intelligence Center
             </div>
@@ -704,10 +513,6 @@ const CSS = `
 .dx .lime { color:var(--pos); }
 .dx .up { color:var(--pos); } .dx .down { color:var(--neg); }
 .dx-muted { color:var(--muted); }
-.dx-demo { font-size:9px; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
-  color:var(--ink); background:var(--lime); border:2px solid var(--ink);
-  padding:2px 7px; border-radius:0; vertical-align:middle; }
-.dx-demo.abs { position:absolute; top:16px; right:16px; z-index:4; }
 
 .dx-card { position:relative; background:var(--srf); border:3px solid var(--ink);
   border-radius:0; padding:22px; box-shadow:var(--hard); }
@@ -730,7 +535,6 @@ const CSS = `
 .dx-balance { font-family:var(--font-display); font-size:54px; font-weight:800; letter-spacing:-2.5px;
   line-height:1; margin:8px 0 6px; color:var(--ink); }
 .dx-balance span { font-size:18px; font-weight:700; color:var(--muted); letter-spacing:0; }
-.dx-equiv { font-family:var(--font-mono); font-size:20px; font-weight:700; color:var(--pos); }
 .dx-var { display:flex; align-items:center; gap:10px; margin-top:14px; }
 .dx-var-pill { display:inline-flex; align-items:center; gap:5px; font-weight:800; font-size:13px;
   padding:4px 10px; border-radius:0; border:2px solid var(--ink); }
@@ -828,25 +632,8 @@ const CSS = `
 .dx-live i { width:8px; height:8px; border-radius:0; background:var(--lime); border:1px solid var(--ink);
   animation:dx-pulse 1.6s ease-in-out infinite; }
 @keyframes dx-pulse { 0%,100%{opacity:1;} 50%{opacity:.35;} }
-.dx-exch-scroll { overflow-x:auto; }
-.dx-exch-tbl { width:100%; border-collapse:collapse; }
-.dx-exch-tbl th { text-align:right; font-size:10px; letter-spacing:.1em; text-transform:uppercase;
   color:var(--muted); font-family:var(--font-mono); font-weight:700; padding:0 0 10px; }
-.dx-exch-tbl th:first-child { text-align:left; }
-.dx-exch-tbl td { text-align:right; padding:11px 0; border-top:2px solid var(--srf2); font-size:13px; font-weight:700; color:var(--ink); }
-.dx-exch-tbl tbody tr { cursor:pointer; transition:background .15s; }
-.dx-exch-tbl tbody tr:hover td { background:var(--srf2); }
-.dx-exch-tbl td:first-child { text-align:left; }
-.dx-exch-tbl td.dim { color:var(--muted); font-weight:600; }
-.dx-asset { display:flex; align-items:center; gap:10px; }
-.dx-asset-ic { width:30px; height:30px; border-radius:0; border:2px solid var(--ink); display:grid; place-items:center; font-size:11px;
   font-weight:900; color:var(--ink); }
-.dx-asset-ic.g1 { background:#FFB347; }
-.dx-asset-ic.g2 { background:#FF7AC0; }
-.dx-asset-ic.g3 { background:#7AD9FF; }
-.dx-asset-ic.g4 { background:#FF6B66; }
-.dx-asset-ic.g5 { background:#5BE8A0; }
-.dx-asset-ic.g6 { background:#C79BFF; }
 
 /* ── MARKETPLACE ── */
 .dx-mkt-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }

@@ -1,65 +1,64 @@
-// BlaxxBrand — marca oficial (artwork exportado do guia de marca BlaXx Rewards).
-// O símbolo e o lockup completo vêm dos SVGs oficiais servidos em /public:
-//   /blaxx_simbolo_color.svg     → símbolo "B" neon (#59FD27)
-//   /blaxx_principal_color.svg   → lockup vertical completo (B + BlaXx + REWARDS), fundos escuros
-//   /blaxx_principal_preto.svg   → lockup vertical completo em preto, fundos claros
-// O wordmark horizontal (chrome do app) usa o símbolo oficial + texto "BlaXx"
-// ("Bla" acompanha a superfície; "Xx" no verde neon da marca).
-const NEON = '#59FD27' // Verde oficial (#59FD27) — "Xx" sobre fundo escuro
-const XX_ON_LIGHT = '#5AB800' // lime dark — "Xx" sobre fundo claro (regra do wordmark)
-const MARK_RATIO = 451 / 520 // proporção do símbolo oficial (blaxx_simbolo_color.svg)
+// BlaxxBrand — marca oficial, arte vetorial do pacote BlaXx Rewards.
+//
+// Antes: o wordmark era TEXTO ("Bla" + "Xx" em Space Grotesk com font-weight
+// 800). A marca mudava de forma conforme a fonte que o navegador carregasse,
+// e não era a arte oficial — só uma aproximação tipográfica dela.
+//
+// Agora vem de /marca/*.svg, vetorizado da arte oficial. Duas variantes,
+// porque a arte só existe para fundo preto ("Bla" branco):
+//   *.svg        → superfícies ESCURAS  ("Bla" branco, "Xx" neon #59FD27)
+//   *-claro.svg  → superfícies CLARAS   ("Bla" tinta,  "Xx" lime-dark #5AB800)
+// A regra do "Xx" em #5AB800 no claro é a mesma já registrada no projeto —
+// neon puro sobre claro dá 1,08:1.
 
-export function BlaxxMark({ size = 28, className = '' }: { size?: number; className?: string }) {
-  const w = Math.round(size * MARK_RATIO)
+
+export function BlaxxMark({
+  size = 28,
+  tone = 'light',
+  className = '',
+}: {
+  size?: number
+  tone?: 'light' | 'dark'
+  className?: string
+}) {
+  // tone='light' = marca clara, para superfície escura (nome herdado do resto
+  // do componente); tone='dark' = marca escura, para superfície clara.
+  const src = tone === 'light' ? '/marca/blaxx-simbolo-b.svg' : '/marca/blaxx-simbolo-b-claro.svg'
   return (
     <img
-      src="/blaxx_simbolo_color.svg"
+      src={src}
       alt=""
       aria-hidden="true"
       className={className}
-      width={w}
-      height={size}
-      style={{ flexShrink: 0, display: 'block', width: w, height: size }}
+      style={{ flexShrink: 0, display: 'block', height: size, width: 'auto' }}
     />
   )
 }
 
 export function BlaxxBrand({
   markSize = 26,
-  fontSize = 19,
   showText = true,
   tone = 'light',
   className = '',
 }: {
   markSize?: number
+  /** @deprecated a arte é uma peça só; o tamanho vem de markSize */
   fontSize?: number
   showText?: boolean
   tone?: 'light' | 'dark'
   className?: string
 }) {
-  const onDark = tone === 'light'
-  const baseText = onDark ? '#FFFFFF' : '#0A0A0A'
+  // showText=false → só o símbolo "B"; caso contrário o lockup horizontal
+  // completo (BlaXx + REWARDS), que é uma peça única de arte.
+  if (!showText) return <BlaxxMark size={markSize} tone={tone} className={className} />
+  const src = tone === 'light' ? '/marca/blaxx-wordmark.svg' : '/marca/blaxx-wordmark-claro.svg'
   return (
-    <span
+    <img
+      src={src}
+      alt="BlaXx Rewards"
       className={'bxbrand ' + className}
-      style={{ display: 'inline-flex', alignItems: 'center', gap: Math.round(markSize * 0.3) }}
-    >
-      <BlaxxMark size={markSize} />
-      {showText && (
-        <span
-          style={{
-            fontFamily: "'Space Grotesk', var(--font-body)",
-            fontWeight: 800,
-            fontSize,
-            letterSpacing: '-0.03em',
-            lineHeight: 1,
-            color: baseText,
-          }}
-        >
-          Bla<span style={{ color: onDark ? NEON : XX_ON_LIGHT }}>Xx</span>
-        </span>
-      )}
-    </span>
+      style={{ display: 'block', height: Math.round(markSize * 1.15), width: 'auto', flexShrink: 0 }}
+    />
   )
 }
 
@@ -75,15 +74,13 @@ export function BlaxxLockup({
   tone?: 'light' | 'dark'
   className?: string
 }) {
-  const src = tone === 'light' ? '/blaxx_principal_color.svg' : '/blaxx_principal_preto.svg'
+  const src = tone === 'light' ? '/marca/blaxx-logo-completo.svg' : '/marca/blaxx-logo-completo-claro.svg'
   return (
     <img
       src={src}
       alt="BlaXx Rewards"
       className={className}
-      width={height}
-      height={height}
-      style={{ width: height, height, display: 'block', objectFit: 'contain' }}
+      style={{ height, width: 'auto', display: 'block' }}
     />
   )
 }
